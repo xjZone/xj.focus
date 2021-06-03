@@ -1,0 +1,8 @@
+/** xj.focus(区分聚焦模式) | V0.3.0 | Apache Licence 2.0 | 2018-2021 © XJ.Chen | https://github.com/xjZone/xj.focus */
+
+/* 在 tap 模式下，取消所有的聚焦 outline 外边框，在 tab 模式下，取消所有聚焦 outline 并且使用 */
+/* box-shadow 制造外边框，因为和 outline 一样不占位置但又能实现圆角，虽然在 Safari 中可能无效 */
+.xj-focus-ontap:focus{outline:0;}
+.xj-focus-ontab:focus{outline:0;box-shadow:0 0 0 2px rgba(51,153,255,0.75);}
+
+

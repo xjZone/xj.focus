@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="zh-hans">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width" />
+
+<meta name="renderer" content="webkit" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.4.0/themes/prism-material-light.css" />
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.21.0/prism.js" data-manual="canSolveBug"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+
+<link rel="stylesheet" href="../static/plugin/xjDemo/0.1.0/dist/xjDemo.css" />
+<script src="../static/plugin/xjDemo/0.1.0/dist/xjDemo.js"></script>
+
+<!--◇
+<link rel="stylesheet" href="../dist/xj.focus.css" />
+<script src="../dist/xj.focus.js"></script>
+◇-->
+
+<title>xj.focus - debug</title>
+</head>
+<body style="font-family:Iosevka,'Microsoft YaHei','Hiragino Sans GB';max-width:768px;">
+<style>@font-face{font-family:"Iosevka";src:local('Iosevka'), url("../static/font/iosevka/6.1.2/iosevka-fixed-regular.woff2") format("woff2"), url("../static/font/iosevka/6.1.2/iosevka-fixed-regular.woff") format("woff");}</style>
+
+
+
+<section>
+<h1>xj.focus - debug</h1>
+<p>本页罗列了浏览器中那些可被聚焦的标签(不同浏览器有所差异)，用于检查 xj.focus 插件实现的聚焦效果，需要注意的是，IE 有可能因为其他逻辑而不会进入 initializedFocus 逻辑，想测试就得先清掉其他内容。</p>
+<!--◇ 
+<input class="input01" id="input01" name="input01" placeholder="input01" type="text" value="" />
+◇-->
+
+<hr />
+</section>
+
+
+
+<section>
+<h2>额外的样式设置</h2>
+<p>下面的样式是属于可选的，主要用于清除 IE 和 Firefox 聚焦后重复的边框样式，以及解决 Safari 的边框问题，不少框架都会帮我们完成这种样式重置的工作，所以实际上你未必需要用到它们，你可以自行选用：</p>
+
+<textarea class="xjDemo" xjDemo="{larger:true, resultShow:false, sourceWrapStyle:{maxHeight:'512px'},}">
+	<style>
+	/* IE10 开始支持 :invalid 伪类选择器，在 IE10 中的 :invalid 伪类上有 outline 样式，
+	所以需要取消掉，以免造成重复的边框，除了 IE 浏览器，其他浏览器会将 invalid 状态所在
+	的 form 标签也视为 invalid 元素，导致 form 也会出现边框，所以选择器要排除掉 form */
+	.xj-focus-exist :invalid:not(form){
+		outline:0;
+		box-shadow:0 0 0 2px rgba(255,51,51,0.75);
+	}
+	
+	/* Firefox 部分标签被聚焦后，会出现一些多余的边框，一般是和 ::-moz-focus-inner 伪元
+	素选择器结合到一起，我们可将这些边框清掉，避免重复，很多框架如 Bootstrap 或样式重置
+	项目如 Normalize，会帮我们进行这种清除的设置，所以实际上你也未必需要再次设置它们 */
+	.xj-focus-exist input[type="button"]::-moz-focus-inner,
+	.xj-focus-exist input[type="submit"]::-moz-focus-inner,
+	.xj-focus-exist input[type="reset"]::-moz-focus-inner,
+	.xj-focus-exist input[type="color"]::-moz-focus-inner,
+	.xj-focus-exist button::-moz-focus-inner{
+		border:0;
+	}
+	
+	/* MacOS 的 Firefox，当表单控件被聚焦时，边框颜色会变成 ThreeDLightShadow，结果就会
+	导致了外边框的重叠，所以我们得对这些表单控件做一个特殊设置，修改掉它的默认边框颜色，
+	以下是 MacOS 上 Firefox 的 hack 写法，如果你已经定义过控件的边框，那这段就不用了 */
+	@supports (-moz-osx-font-smoothing:auto){
+		.xj-focus-exist input:focus,
+		.xj-focus-exist button:focus,
+		.xj-focus-exist select:focus,
+		.xj-focus-exist textarea:focus{
+			border-color:#ccc;
+		}
+	}
+	
+	/* Safari 的表单控件如果不设置 -webkit-appearance:none;，则 box-shadow 将无法生效，
+	但设置 -webkit-appearance:none; 又会导致不少控件显示异常，可改用 outline 来实现外边
+	框，以下是 Safari 9.0+ 的 hack，需要注意的是 outline-style 不能为 auto，否则无效 */
+	@supports (-webkit-hyphens:none){
+		input.xj-focus-ontab:focus, 
+		button.xj-focus-ontab:focus, 
+		textarea.xj-focus-ontab:focus, 
+		select.xj-focus-ontab:focus{
+			outline:4px solid rgba(51,153,255,0.75);
+			outline-offset:-2px;
+		}
+		.xj-focus-exist :invalid:not(form){
+			outline:4px solid rgba(255,51,51,0.75);
+			outline-offset:-2px;
+		}
+	}
+	</style>
+</textarea>
+
+<hr />
+</section>
+
+
+
+<section>
+<h2>tabIndex</h2>
+<p>tabIndex 属性必须要有整数值，且值必须大于 -1 才可实现聚焦，如果是只有属性但没有值，或者是设置的值小于 0 则不可聚焦，但实际上发现如果设置的值不是整数，也还是照样可以响应，大概是浏览器取整了。</p>
+
+<div style="margin-bottom:16px;">
+	<div tabIndex="1">[✔] tabIndex="1"</div>
+	<div tabIndex="2">[✔] tabIndex="2"</div>
+	<div tabIndex="0">[✔] tabIndex="0"</div>
+	<div tabIndex="0.12345">[✔] tabIndex="0.12345"</div>
+	<div tabIndex="-1">[✗] tabIndex="-1"</div>
+	<div tabIndex>[✗] tabIndex</div>
+</div>
+
+<hr />
+</section>
+
+
+
+<section>
+<h2>contentEditable</h2>
+<p>contentEditable 只在没属性值或值为 "" 或 "true" 时才能聚焦，如果 contentEditable 属性设置了不是 true 的值，如 on 或 1 也不能聚焦，这个属性还支持 plaintext-only 等值，但兼容性不行，就不测了。</p>
+
+<div style="margin-bottom:16px;">
+	<div contentEditable>[✔] contentEditable</div>
+	<div contentEditable="">[✔] contentEditable=""</div>
+	<div contentEditable="true">[✔] contentEditable="true"</div>
+	<div contentEditable="1">[✗] contentEditable="1"</div>
+	<div contentEditable="on">[✗] contentEditable="on"</div>
+	<div contentEditable="off">[✗] contentEditable="off"</div>
+	<div contentEditable="open">[✗] contentEditable="open"</div>
+	<div contentEditable="flase">[✗] contentEditable="flase"</div>
+</div>
+
+<hr />
+</section>
+
+
+
+<section>
+<h2>(moz-|webkit-)user-modify</h2>
+<p>在 CSS 中可使用 (moz-|webkit-)user-modify 属性将标签变成可编辑模式，Chrome 可用，Firefox 可用但没效果，后来这个属性并没被纳入标准，测试发现 write-only 属性并不被浏览器支持，无法编辑和聚焦。</p>
+
+<div style="margin-bottom:16px;">
+	<div style="-moz-user-modify:read-write-plaintext-only;-webkit-user-modify:read-write-plaintext-only;">[✔] user-modify:read-write-plaintext-only (Edge12 + Chrome + Safari)</div>
+	<div style="-moz-user-modify:read-write;-webkit-user-modify:read-write;">[✔] user-modify:read-write (Edge12 + Chrome + Safari)</div>
+	<div style="-moz-user-modify:write-only;-webkit-user-modify:write-only;">[✗] user-modify:write-only</div>
+	<div style="-moz-user-modify:read-only;-webkit-user-modify:read-only;">[✗] user-modify:read-only</div>
+</div>
+
+<hr />
+</section>
+
+
+
+<section>
+<h2>svg > a</h2>
+<p>只有 IE10/11 可以对 svg 标签实现聚焦，Firefox49 和 Safari12.1(MacOS) 对 svg 中的 a 无法聚焦，对 svg 中的 a 使用 :focus{} 伪类设置 outline 或 box-shdoaw 样式，并不会生效，还会破坏掉原有的外边框样式，尤其是在 IE 中，考虑到兼容，所以不对 svg 中的 a 设置 :focus 规则，用浏览器自带的样式就行。</p>
+
+<div style="margin-bottom:16px;">
+	<svg style="display:inline-block;vertical-align:top;width:192px;height:86px;border:1px solid #ccc;">
+		<a href="javascript:void(0)">
+			<rect x="10" y="10" width="172" height="28" fill="#f0f0f0"></rect>
+			<text x="20" y="28" font-size="14">anchor>text</text>
+		</a>
+		<a href="javascript:void(0)">
+			<rect x="10" y="50" width="172" height="28" fill="#f0f0f0"></rect>
+			<text x="20" y="68" font-size="14">tabIndex="0"</text>
+		</a>
+	</svg>
+</div>
+
+<hr />
+</section>
+
+
+
+<section>
+<h2>map > area</h2>
+<p>IE10 的 area 标签和 svg 中的 a 标签一样，不能设置 :focus 伪类的边框，不单不生效，还会破坏原有边框，在 Firefox49/72 中，area 标签不受的 :focus 伪类样式的影响，在被聚焦之后依旧显示的是灰色的虚边，也就是设置后无效，在 Chrome 和 Safari 中设置是有效的，但考虑到兼容，还是继续保持原状不变。</p>
+
+<div style="margin-bottom:16px;">
+	<img useMap="#map01" src="../static/image/area.gif" />
+	<map id="map01" name="map01">
+		<area title="rect" alt="rect" shape="rect" coords="8,8,56,56" href="javascript:void(0)" />
+		<area title="circle" alt="circle" shape="circle" coords="96,32,24" href="javascript:void(0)" />
+		<area title="poly" alt="poly" shape="poly" coords="160,8,184,56,136,56" href="javascript:void(0)" />
+	</map>
+</div>
+
+<hr />
+</section>
+
+
+
+<section>
+<h3>details > summary</h3>
+<p>浏览器必须要支持 details 标签和 summary 标签才可能实现聚焦，Safari6.0+, Firefox49+, Chrome12 开始支持这些标签，聚焦后按 enter 能切换 open 属性状态，实现展开或着关闭，由于 IE 和 Edge 并不支持这两个标签的功能，所以这两个标签并不能被聚焦，一直到 Edge79(Chromium 内核)时，Edge 才开始支持。</p>
+
+<div style="display:inline-block;vertical-align:top;border:1px solid #ccc;margin-bottom:16px;padding:16px;min-width:158px;">
+	<details>
+		<summary style="display:block;">summary</summary>
+		<div>details</div>
+	</details>
+</div>
+
+<hr />
+</section>
+
+
+
+<section>
+<h2>form</h2>
+<p>可允许用户输入的标签，如 input 或 textarea 等，xj.focus 会让它们在聚焦时总是显示出外边框，不管是哪种聚焦方式都会显示，除了 IE，其他浏览器都会将 invalid 状态所在 form 也视为 invalid 元素，导致 form 会有阴影样式，所以选择器要排除掉 form，因此用了 .xj-focus-exist :invalid:not(form){} 写法。</p>
+
+<form style="margin-bottom:16px;">
+	<p><input style="width:128px;" type="text" required="required" placeholder="required" /></p>
+	<p><textarea style="width:200px;" placeholder="Textarea"></textarea></p>
+	<p>
+		<button type="button">button button</button>
+		<button type="submit">button submit</button>
+		<button type="reset">button reset</button>
+	</p>
+	<p>
+		<input name="radio" type="radio" value="1" checked="checked"/><input name="radio" type="radio" value="2" />
+		<input name="checkbox[]" type="checkbox" value="1" checked="checked" /><input name="checkbox[]" type="checkbox" value="2" />
+	</p>
+	<p>
+		<input type="button" value="button" />
+		<input type="submit" value="submit" />
+		<input type="reset" value="reset" />
+	</p>
+	<p>
+		<input style="width:128px;" type="text" placeholder="text" />
+		<input style="width:128px;" type="password" placeholder="password" />
+	</p>
+	<p>
+		<input style="width:96px;" type="search" placeholder="search" />
+		<input style="width:96px;" type="number" placeholder="number" />
+		<input style="width:96px;" type="email" placeholder="email" />
+		<input style="width:96px;" type="url" placeholder="url" />
+		<input style="width:96px;" type="tel" placeholder="tel" />
+	</p>
+	<p>
+		<input style="width:128px;" placeholder="datetime-local" type="datetime-local" />
+		<input style="width:128px;" placeholder="date" type="date" />
+		<input style="width:128px;" placeholder="time" type="time" />
+	</p>
+	<p>
+		<input style="width:128px;" placeholder="month" type="month" />
+		<input style="width:128px;" placeholder="week" type="week" />
+	</p>
+	<p><input style="width:256px;border:1px solid #ccc;" type="file" multiple="multiple" accept="image/*" /></p>
+	<p><input style="width:128px;box-sizing:border-box;" type="color" value="#3399ff" /></p>
+	<p><input style="width:64px;margin:0;padding:0;" type="range" /></p>
+	<p>
+		<input type="image" alt="imageSubmit" src="../static/image/64x64.gif" />
+	</p>
+	<p>
+		<select><option value="1">01</option><option value="2">02</option><option value="3">03</option></select>
+		<select multiple="multiple" size="3"><option value="1">01</option><option value="2">02</option><option value="3">03</option></select>
+	</p>
+</form>
+
+<hr />
+</section>
+
+
+
+<section>
+<h2>audio, video</h2>
+<p>根据 W3C 的描述，audio 和 video 标签的 UI 部分，点击事件和键盘事件都无法被触发，也就是无法冒泡或者被捕获，这就导致我们无法根据用户的操作方式来判断聚焦的形式，xj.focus 插件只好将它们的 focus 事件都统一当作点击导致的，所以没有外边框（早期的浏览器如 IE10 和 Firefox49，事件就能够被捕获到）。</p>
+
+<div style="margin-bottom:16px;">
+	<audio controls="controls" preload="metadata" style="width:320px;"
+	type="audio/mpeg" src="../static/media/01234567.mp3"></audio>
+	<br />
+	<video controls="controls" preload="metadata" width="320" height="180" poster="../static/image/poster.gif" 
+	type="video/mp4" src="../static/media/01234567.mp4"></video>
+	<br />
+</div>
+
+<hr />
+</section>
+
+
+
+<section>
+<h2>iframe, embed, object</h2>
+<p>在 IE11/12/18 中，iframe 可被聚焦，但 :focus{} 伪类样式设置后无效，在 Firefox 中可滚动的 iframe 也可以聚焦，但跟 IE 一样的样式不生效，IE & Chrome 的 embed 和 object 可被聚焦，但在 Firefox 和 Safari 则不行，IE18, IE80, Firefox49, Chrome63 无法阻止 embed 和 object 标签里的视频的自动播放。</p>
+
+<div style="margin-bottom:16px;">
+	<iframe style="box-sizing:border-box;border:1px solid #ccc;width:320px;height:180px;" src="http://www.example.com"></iframe>
+	<br />
+	<embed width="320" height="180" autoStart="0" style="background-color:#000;" type="video/mp4" src="../static/media/01234567.mp4" />
+	<br />
+	<object width="320" height="180" style="background-color:#000;" type="video/mp4" data="../static/media/01234567.mp4">
+		<param name="autoStart" value="0" />
+	</object>
+	<br />
+</div>
+
+<hr />
+</section>
+
+
+
+<section>
+<h2>div[tabIndex="0"] > a > button</h2>
+<p>嵌套也没问题，因为事件是捕获的，不会重复，将从 window 开始，一级一级往下，到达 target 就会停下。</p>
+
+<div style="display:inline-block;vertical-align:top;border:1px solid #ccc;margin-bottom:16px;padding:16px;">
+	<span tabIndex="0">span > 
+		<a href="javascript:void(0)">a > 
+			<button type="button">button</button>
+		</a>
+	</span>
+</div>
+
+<hr />
+</section>
+
+
+
+<section>
+<h2>a > *, button > *</h2>
+<p>点击子元素导致父元素聚焦也没问题，不显示外边框，下例点击 a 或 button 的子元素，都是 ontap 聚焦。</p>
+
+<div style="display:inline-block;vertical-align:top;border:1px solid #ccc;margin-bottom:16px;padding:16px;">
+	<a href="javascript:void(0)">Anchor > <strong>strong > <em>em</em></strong></a><br />
+	<button type="button">Button > <strong>strong > <em>em</em></strong></button><br />
+</div>
+
+<hr />
+</section>
+
+
+
+<section>
+<h2>lebel</h2>
+<p>点击 label 而聚焦，算是 ontap 的形式聚焦，下例点击 label 会聚焦到控件上，只有 text 会显示边框。</p>
+
+<div style="display:inline-block;vertical-align:top;border:1px solid #ccc;margin-bottom:16px;padding:16px;">
+	<label>label <input type="text" style="width:140px;" placeholder="Text" /></label><br />
+	<label>label <button type="button">button01</button></label><br />
+	<label>label <input type="checkbox" /></label><br />
+</div>
+
+<hr />
+</section>
+
+
+
+<section>
+<h2>focus() & dispatchEvent()</h2>
+<p>通过 focus() 聚焦将被当成 ontab 形式的聚焦，通过 dispatchEvent() 聚焦将被当成 ontap 形式的聚焦。</p>
+
+<div style="display:inline-block;vertical-align:top;border:1px solid #ccc;margin-bottom:16px;padding:16px;">
+	<button id="button01" type="button" onclick="document.getElementById('button02').focus()">button02.focus()</button><br />
+	<button id="button02" type="button">button02</button><br />
+	<button id="button03" type="button" onclick="var focusEvent = document.createEvent('Event'); focusEvent.initEvent('focus', false, true); document.getElementById('button04').dispatchEvent(focusEvent);">button04.dispatchEvent(focusEvent)</button><br />
+	<button id="button04" type="button">button04</button><br />
+</div>
+
+<hr />
+</section>
+
+
+
+<section>
+<h2>IE 中的 BUG - 有尺寸样式设置</h2>
+<p>在 IE 中，有尺寸设置的节点(例如有 width 样式)，被点击也会触发 focus 事件，且 :focus 伪类也会生效，如果是 initializedFocus 或 visibilityFocus 类型的聚焦就会显示出外边框，但该 BUG 已经被解决。</p>
+
+<div style="display:inline-block;vertical-align:top;border:1px solid #ccc;margin-bottom:16px;padding:16px;">
+	<div style="width:260px;max-width:260px;">div[style=<br />"width:360px;max-width:360px;"]</div>
+	<div style="height:48px;max-height:48px;">div[style=<br />"height:24px;max-height:24px;"]</div>
+</div>
+
+<hr />
+</section>
+
+
+
+<section>
+<h2>IE 中的 BUG - 有滚动条的情况</h2>
+<p>在 IE 中，节点如果有滚动条，那么这节点在被点击时也会触发 focus 事件，并且 :focus 伪类也会生效，此时如果是 initializedFocus 或 visibilityFocus 类型的聚焦就会显示外边框，但该 BUG 已经被解决。</p>
+
+<div style="display:inline-block;vertical-align:top;border:1px solid #ccc;margin-bottom:16px;padding:16px;">
+	<div style="width:280px;overflow:scroll;border:1px solid #ccc;">
+		div[style="<br />　　overflow:scroll;<br />　　border:1px solid #ccc;"]<br />
+		<div style="width:125%;border:1px solid #ccc;">　　>div[style="<br />　　　　width:125%;<br />　　　　border:1px solid #ccc;"]</div>
+	</div>
+</div>
+
+<hr />
+</section>
+
+
+
+<section>
+<h2>IE 中的 BUG - 不该聚焦的标签</h2>
+<p>在 IE 中，html 和 body 可被聚焦，table, caption, td, fieldset 虽然不能通过 tab 键聚焦，但却可以通过点击来触发聚焦，导致可能出现一些奇怪的聚焦现象，显示出不该显示的边框，但该 BUG 已经被解决。</p>
+
+<div style="margin-bottom:16px;">
+	<table style="border:1px solid #ccc;">
+		<caption style="border:1px solid #ccc;">caption</caption>
+		<colgroup><col style="background-color:#f0f0f0;" /></colgroup>
+		<thead><tr><th>标题单元格</th><th>标题单元格</th></tr></thead>
+		<tbody><tr><td>内容单元格</td><td>内容单元格</td></tr></tbody>
+		<tfoot><tr><td>内容单元格</td><td>内容单元格</td></tr></tfoot>
+	</table>
+	<fieldset>fieldset > <legend>legend</legend></fieldset>
+</div>
+
+<hr />
+</section>
+
+
+
+<script>
+// 可在引入插件前，通过 xj.focusConfig['0.3.0'] 来设置默认的参数，注意版本号要对得上，否则无效
+// if(window.xj === undefined){ xj = {} };
+// if(xj.focusConfig === undefined){ xj.focusConfig = {} };
+// xj.focusConfig['0.3.0'] = {
+// 	
+//	classTarget : document.documentElement,			// 要添加 existClass 类名的目标节点，默认是 html 标签节点，之所以不是 body 是因为插件初始化时 body 标签可能还未加载
+//	existClass : 'xj-focus-exist',					// 初始化后，targetClass 元素节点会被添加的类名，默认是 'xj-focus-exist'，可用于 CSS 判断环境是否存在 xj.focus 插件
+//	
+//	debug : false,									// 是否进入调试模式，默认为 false，如果将该属性设置为 true 则在触发 blur 事件之后，将不会自动删除 ontabClass(默认是 'xj-focus-ontab') 或 ontapClass(默认是 'xj-focus-ontap') 的类名，方便进行开发调试
+//	time : 200,										// 在这个时间内相继触发 tab / tap 事件和 focus 事件，那就认为这个 focus 事件是自然触发的，这主要是为了辨别出由 focus() 方法和浏览器自动引发的 focus 事件，这类事件得根据需要判断是当作 tap / tab 聚焦
+//	
+//	// 聚焦并不是只有被点击或按键盘的 Tab 键时才会发生，实际上还有其他情况，有些是浏览器自动的操作，有些则是由 JS 导致的，xj.focus 将这些情况也都考虑到了
+//	// 下面的这五个参数，是用于区分不同的场景之下，触发了 focus 聚焦事件后的响应模式，这些参数都有 3 个字符串值可选择，分别是 'ontab' / 'ontap' / 'other'
+//	// 如果是 'ontab'，那么元素聚焦后，默认会被添加 'xj-focus-ontab' 类名，如果使用了 xj.focus.css 文件，那么这个类名将导致被聚焦的元素显示出蓝色的外边框
+//	// 如果是 'ontap'，那么元素聚焦后，默认会被添加 'xj-focus-ontap' 类名，如果使用了 xj.focus.css 文件，那么这个类名会导致被聚焦的元素不显示出任何外边框
+//	// 如果是 'other'，那么元素聚焦后，默认会被添加 'xj-focus-other' 类名，实际上这相当于忽略这个 focus 事件，一般在 dispatchFocus 场景使用，不显示外边框
+//	initializedFocus : 'ontab',						// 当 focus 事件是由页面 ready 后浏览器自动触发(在 DOMContentLoaded 后 IE10/11 就会触发了)，该如何响应，默认是 'ontab'，这种情况下最好是让用户能明确页面所在的焦点，所以用 'ontab' 来强调外边框的存在
+//	visibilityFocus : 'ontab',						// 当 focus 事件是由于切换浏览器的 tab 标签，或浏览器最小最大化操作而触发的，该如何响应，默认是 'ontab'，这种情况下用户可能会忘记之前页面焦点位置，所以跟 initializedFocus 一样再次显示外边框提示
+//	automaticFocus : 'ontap',						// 当 focus 事件是由于聚焦到 devTool 面板或 URL 地址栏，然后再回到页面中导致的，该如何响应，默认是 'ontap'，因为这种情况往往是用户自己有意识的操作，并不需要额外的提醒，所以当作 'ontap' 即可
+//	dispatchFocus : 'other',						// 当 focus 事件是由 dispatchEvent() 方法触发的，该如何响应，默认是 'other'，因为这种触发方式并不会真的造成 UI 聚焦，执行后也无法自动再执行失焦，所以如果遇到的是这种情况，那就相当于忽略
+//	elementFocus : 'ontab',							// 当 focus 事件是由 Element.prototype.focus() 方法触发，该如何响应，默认是 'ontab'，因为这种情况下往往需要强调被聚焦的元素，所以用 'ontab'，就会显示出外边框，以此来加强对用户的提示
+//	
+//	ontabClass : 'xj-focus-ontab',					// 当使用键盘，按了 tab 或方向键而实现聚焦时，在被聚焦的元素节点上会被添加的类名，默认是 'xj-focus-ontab'
+//	ontapClass : 'xj-focus-ontap',					// 当使用了 touchstart 操作或 mousedown 操作，在被聚焦的元素节点上会被添加的类名，默认是 'xj-focus-ontap'
+//	otherClass : 'xj-focus-other',					// 当聚焦既不是键盘触发的，也不是 tap 触发的，在被聚焦的元素节点上会被添加的类名，默认是 'xj-focus-other'
+//	
+//	ontabFixedClass : 'xj-focus-ontab-fixed',		// 如果节点有这个类名，则聚焦时总会被当成 ontab 模式的聚焦，默认是 'xj-focus-ontab-fixed'，这个参数优先级最高
+//	ontapFixedClass : 'xj-focus-ontap-fixed',		// 如果节点有这个类名，则聚焦时总会被当成 ontap 模式的聚焦，默认是 'xj-focus-ontap-fixed'，这个参数优先级最高
+//	otherFixedClass : 'xj-focus-other-fixed',		// 如果节点有这个类名，则聚焦时总会被当成 other 模式的聚焦，默认是 'xj-focus-other-fixed'，这个参数优先级最高
+//	
+//	// 不管是由哪种方式触发了 focus 事件，如果触发事件的元素，符合这个数组中的选择器，那就会进入 ontab 的状态，默认值为 ['textarea', 
+//	// 'input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="file"]):not([type="image"])
+//	// :not([type="radio"]):not([type="checkbox"]):not([type="range"]):not([type="color"])']
+//	// 基本原则就是，对于那些允许用户输入的元素，不管究竟由哪种操作模式导致的聚焦，总当作由 ontab 触发，也就是说聚焦时总会显示外边框
+//	ontabAlways : ['textarea', 'input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="file"]):not([type="image"]):not([type="radio"]):not([type="checkbox"]):not([type="range"]):not([type="color"])'],
+//	
+//	// 不管是由哪种方式触发了 focus 事件，如果触发事件的元素，符合这个数组中的选择器，那就会进入 ontap 的状态，默认为 ['audio', 'video']
+//	// 之所以将 audio 和 video 设为总是 ontap，是因为 W3C 对 audio 和 video 的规范，这两个元素的鼠标事件和键盘事件都不生效，也不进行传递
+//	// 不管是冒泡还是捕获，不管是直接绑定还是间接绑定，mousedown / keydown 的事件都无法触发，根本就无法判断 focus 是由什么操作模式导致的
+//	// 最终只能是，这两个标签不管是由哪种形式触发的聚焦，总会进入 ontap 状态，将所有聚焦事件都当成是点击触发的，这样就统一了浏览器的结果
+//	ontapAlways : ['audio', 'video'],
+//	
+//	// 不管是由哪种方式触发了 focus 事件，如果触发事件的元素，符合下面这个数组中的选择器，那么就会进入 other 的状态，默认值为 ['area', 'svg a']
+//	// 之所以遇到 area 和 svg 中的 a 这两种元素就进入 other 状态，是因为这两种元素不能在 :focus{} 选择器规则中设置 outline 或 box-shadow 的样式
+//	// 如果进行设置，不单设置不会生效，还会导致原有的聚焦外边框样式失踪，这样聚焦后就没外边框了，尤其是 IE 和 Firefox，所以只好将这两个元素排除
+//	// 这样当我们设置了 .xj-focus-ontab:focus{} 和 .xj-focus-ontap:focus{} 的样式规则时，就不会对这个数组中对应的元素标签生效了，让他们保持默认
+//	otherAlways : ['area', 'svg a'],
+//	
+//	ontabCallback : pub_nothing,					// 这是当进入 ontab 状态下的回调，element 参数是导致函数触发的节点，你也可以借着这个节点自己进行进一步的判断，如果该函数最终返回的是 false，那么将会阻止本次进入 ontab 状态的操作
+//	ontapCallback : pub_nothing,					// 这是当进入 ontap 状态下的回调，element 参数是导致函数触发的节点，你也可以借着这个节点自己进行进一步的判断，如果该函数最终返回的是 false，那么将会阻止本次进入 ontap 状态的操作
+//	otherCallback : pub_nothing,					// 这是当进入 other 状态下的回调，element 参数是导致函数触发的节点，你也可以借着这个节点自己进行进一步的判断，如果该函数最终返回的是 false，那么将会阻止本次进入 other 状态的操作
+// 	
+// };
+
+
+
+// 插入无缓存的 link 节点
+window.insertLink = function(option){
+	var link = document.createElement('link');
+	if(option.error){ link.error = option.error };
+	if(option.onload){ link.onload = option.onload };
+	if(option.type === undefined){ link.type = 'text/css' };
+	if(option.rel === undefined){ link.rel = 'stylesheet' };
+	if(option.href){ link.href = option.href + (/\?/.test(option.href) ? '' : '?') + 'timeStamp=' + Date.now() };
+	document.body.appendChild(link);
+};
+
+// 插入无缓存的 script 节点
+window.insertScript = function(option){
+	var script = document.createElement('script');
+	if(option.error){ script.error = option.error };
+	if(option.onload){ script.onload = option.onload };
+	if(option.type === undefined){ script.type = 'text/javascript' };
+	if(option.charset === undefined){ script.charset = 'utf-8' };
+	if(option.src){ script.src = option.src + (/\?/.test(option.src) ? '' : '?') + 'timeStamp=' + Date.now() };
+	document.body.appendChild(script);
+};
+
+
+
+// 动态的加载插件，避免有缓存
+window.insertLink({href : '../dist/xj.focus.css', onload : function(){
+window.insertScript({src : '../dist/xj.focus.js', onload : function(){
+
+// 没使用 requirejs 或 seajs 进行模块化时，可以使用全局中的 xj.focus 对象
+// 否则就是 require(['xj.focus'], function(xo){ console.log(xo) }) 这样了
+console.log(xj.focus);
+
+// 这是 xj.focus 对象的内容，三个方法都可以通过传入节点，让这个节点进入 focus 状态
+// 实际不会真有 focus 操作，只是目标节点上会出现对应的类名，如 xj-focus-ontab 而已
+// {
+// 	version : '0.3.4',							// 当前插件和配置的版本号
+// 	
+// 	ontab : false,								// 当前是否在 ontab 状态下
+// 	ontap : false,								// 当前是否在 ontap 状态下
+// 	other : false,								// 当前是否在 other 状态下
+// 	
+// 	ontabSet : function(){},					// 传入节点设为 ontab 状态
+// 	ontapSet : function(){},					// 传入节点设为 ontap 状态
+// 	otherSet : function(){},					// 传入节点设为 other 状态
+// }
+
+}});
+}});
+</script>
+
+
+
+</body>
+</html>
+
+
