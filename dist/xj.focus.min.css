@@ -1,2 +1,2 @@
-/** xj.focus(区分聚焦模式) | V0.3.0 | Apache Licence 2.0 | 2018-2021 © XJ.Chen | https://github.com/xjZone/xj.focus */
-.xj-focus-ontap:focus{outline:0}.xj-focus-ontab:focus{outline:0;box-shadow:0 0 0 2px rgba(51,153,255,.75)}
+/** xj.focus(区分聚焦模式) | V0.3.1 | Apache Licence 2.0 | 2018-2021 © XJ.Chen | https://github.com/xjZone/xj.focus */
+.xj-focus-shadow.xj-focus-ontap:focus{outline:0}.xj-focus-shadow.xj-focus-ontab:focus{outline:0;box-shadow:0 0 0 2px rgba(51,153,255,.75)}.xj-focus-outline.xj-focus-ontap:focus{outline:0}.xj-focus-outline.xj-focus-ontab:focus{outline:2px solid rgba(51,153,255,.75);outline-offset:0}

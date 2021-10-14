@@ -1,8 +1,8 @@
-/** xj.focus(区分聚焦模式) | V0.3.0 | Apache Licence 2.0 | 2018-2021 © XJ.Chen | https://github.com/xjZone/xj.focus */
+/** xj.focus(区分聚焦模式) | V0.3.1 | Apache Licence 2.0 | 2018-2021 © XJ.Chen | https://github.com/xjZone/xj.focus */
 ;(function(global, factory){
 	if(typeof(define) === 'function' && (define.amd !== undefined || define.cmd !== undefined)){ define(factory) }
 	else if(typeof(module) !== 'undefined' && typeof(exports) === 'object'){ module.exports = factory() }
-	else{ global = (global||self), global.xj||(global.xj = {}), global.xj.focus = factory( ); };
+	else{ global = (global||self), global.xj||(global.xj = {}), global.xj.focus = factory() };
 }(this, function(){ 'use strict';
 
 
@@ -22,7 +22,7 @@ var pub_hasClass,pub_addClass,pub_delClass;!function(){pub_hasClass=function(a,b
 var pub_global = (typeof(globalThis) !== 'undefined' ? globalThis : typeof(window) !== 'undefined' ? window : typeof(self) !== 'undefined' ? self : global);
 
 // public nothing, version, keyword
-var pub_nothing = function(){}, pub_version = '0.3.0', pub_keyword = 'focus';
+var pub_nothing = function(){}, pub_version = '0.3.1', pub_keyword = 'focus';
 
 // public config, advance set
 var pub_config = {
@@ -30,7 +30,7 @@ var pub_config = {
 	classTarget : document.documentElement,			// 要添加 existClass 类名的目标节点，默认是 html 标签节点，之所以不是 body 是因为插件初始化时 body 标签可能还未加载
 	existClass : 'xj-focus-exist',					// 初始化后，targetClass 元素节点会被添加的类名，默认是 'xj-focus-exist'，可用于 CSS 判断环境是否存在 xj.focus 插件
 	
-	debug : false,									// 是否进入调试模式，默认为 false，如果将该属性设置为 true 则在触发 blur 事件之后，将不会自动删除 ontabClass(默认是 'xj-focus-ontab') 或 ontapClass(默认是 'xj-focus-ontap') 的类名，方便进行开发调试
+	debug : false,									// 是否进入调试模式，默认是 false，如果将该属性设置为 true 则在触发 blur 事件之后，将不会自动删除 ontabClass(默认是 'xj-focus-ontab') 或 ontapClass(默认是 'xj-focus-ontap') 的类名，方便进行开发调试
 	time : 200,										// 在这个时间内相继触发 tab / tap 事件和 focus 事件，那就认为这个 focus 事件是自然触发的，这主要是为了辨别出由 focus() 方法和浏览器自动引发的 focus 事件，这类事件得根据需要判断是当作 tap / tab 聚焦
 	
 	// 聚焦并不是只有被点击或按键盘的 Tab 键时才会发生，实际上还有其他情况，有些是浏览器自动的操作，有些则是由 JS 导致的，xj.focus 将这些情况也都考虑到了
@@ -43,6 +43,10 @@ var pub_config = {
 	automaticFocus : 'ontap',						// 当 focus 事件是由于聚焦到 devTool 面板或 URL 地址栏，然后再回到页面中导致的，该如何响应，默认是 'ontap'，因为这种情况往往是用户自己有意识的操作，并不需要额外的提醒，所以当作 'ontap' 即可
 	dispatchFocus : 'other',						// 当 focus 事件是由 dispatchEvent() 方法触发的，该如何响应，默认是 'other'，因为这种触发方式并不会真的造成 UI 聚焦，执行后也无法自动再执行失焦，所以如果遇到的是这种情况，那就相当于忽略
 	elementFocus : 'ontab',							// 当 focus 事件是由 Element.prototype.focus() 方法触发，该如何响应，默认是 'ontab'，因为这种情况下往往需要强调被聚焦的元素，所以用 'ontab'，就会显示出外边框，以此来加强对用户的提示
+	
+	frameStyle : 'auto',							// 聚焦后外边框使用哪种样式，默认为 'auto' 既 Safari 用 outline 而其他浏览器使用 shadow，因为 Safari 的表单控件没设置 appearance:none 时不支持 shadow，备选项有 'shadow' 和 'outline'
+	shadowClass : 'xj-focus-shadow',				// 使用 box-shadow 生成被聚焦外边框时添加的类名，默认为 'xj-focus-shadow'，box-shadow 生成的外边框可以支持圆角，但是 Safari 的表单控件不支持 box-shadow，除非是有设置 appearance:none
+	outlineClass : 'xj-focus-outline',				// 使用 outline 生成被聚焦外边框时添加的类名，默认为 'xj-focus-outline'，outline 生成的外边框无法支持圆角，但是它兼容性更好，在各种浏览器中都可以使用，尤其是 Safari 也只能用 outline
 	
 	ontabClass : 'xj-focus-ontab',					// 当使用键盘，按了 tab 或方向键而实现聚焦时，在被聚焦的元素节点上会被添加的类名，默认是 'xj-focus-ontab'
 	ontapClass : 'xj-focus-ontap',					// 当使用了 touchstart 操作或 mousedown 操作，在被聚焦的元素节点上会被添加的类名，默认是 'xj-focus-ontap'
@@ -58,7 +62,7 @@ var pub_config = {
 	// 基本原则就是，对于那些允许用户输入的元素，不管究竟由哪种操作模式导致的聚焦，总当作由 ontab 触发，也就是说聚焦时总会显示外边框
 	ontabAlways : ['textarea', 'input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="file"]):not([type="image"]):not([type="radio"]):not([type="checkbox"]):not([type="range"]):not([type="color"])'],
 	
-	// 不管是由哪种方式触发了 focus 事件，如果触发事件的元素，符合这个数组中的选择器，那就会进入 ontap 的状态，默认为 ['audio', 'video']
+	// 不管是由哪种方式触发了 focus 事件，如果触发事件的元素，符合这个数组中的选择器，那就会进入 ontap 的状态，默认是 ['audio', 'video']
 	// 之所以将 audio 和 video 设为总是 ontap，是因为 W3C 对 audio 和 video 的规范，这两个元素的鼠标事件和键盘事件都不生效，也不进行传递
 	// 不管是冒泡还是捕获，不管是直接绑定还是间接绑定，mousedown / keydown 的事件都无法触发，根本就无法判断 focus 是由什么操作模式导致的
 	// 最终只能是，这两个标签不管是由哪种形式触发的聚焦，总会进入 ontap 状态，将所有聚焦事件都当成是点击触发的，这样就统一了浏览器的结果
@@ -69,6 +73,12 @@ var pub_config = {
 	// 如果进行设置，不单设置不会生效，还会导致原有的聚焦外边框样式失踪，这样聚焦后就没外边框了，尤其是 IE 和 Firefox，所以只好将这两个元素排除
 	// 这样当我们设置了 .xj-focus-ontab:focus{} 和 .xj-focus-ontap:focus{} 的样式规则时，就不会对这个数组中对应的元素标签生效了，让他们保持默认
 	otherAlways : ['area', 'svg a'],
+	
+	// 允许用户输入的元素，除了 input 标签和 textarea 标签之外，还有那些标签上被设置了 contentEditable 属性的标签，以及被设置了 user-modify 样式的标签
+	// modifiableTag 参数用于控制对这些标签的聚焦表现，默认为 'ontab'，也就是不管聚焦是什么形式导致的，都会进入 ontab 模式，此时聚焦时总会显示出外边框
+	// 设置为 'ontap'，则是不管聚焦由什么形式导致的，都会进入 ontap 模式，此时聚焦将不会显示出外边框，设置为 'other'，则不修改样式，保持浏览器默认状态
+	// 如果设置为 'auto'，则不做任何的特殊处理，此时进入什么状态，取决于聚焦究竟是什么操作行为导致的，是点击则进入 ontap 状态，是键盘则进入 ontab 状态
+	modifiableTag : 'ontab',
 	
 	ontabCallback : pub_nothing,					// 这是当进入 ontab 状态下的回调，element 参数是导致函数触发的节点，你也可以借着这个节点自己进行进一步的判断，如果该函数最终返回的是 false，那么将会阻止本次进入 ontab 状态的操作
 	ontapCallback : pub_nothing,					// 这是当进入 ontap 状态下的回调，element 参数是导致函数触发的节点，你也可以借着这个节点自己进行进一步的判断，如果该函数最终返回的是 false，那么将会阻止本次进入 ontap 状态的操作
@@ -105,6 +115,12 @@ var pub_body = pub_doc.body;
 
 
 
+// 根据外边框的样式来确定使用的类名
+var pub_frameClass = pub_config.shadowClass;
+if((pub_config.frameStyle === 'outline') || (pub_config.frameStyle === 'auto' && /Apple/i.test(navigator.vendor) === true)){ pub_frameClass = pub_config.outlineClass };
+
+
+
 // 这是插件执行后最终将会返回的对象
 var pub_return = {
 	
@@ -123,6 +139,7 @@ var pub_return = {
 		pub_return.ontab = true;
 		pub_return.ontap = false;
 		pub_return.other = false;
+		pub_addClass(element, pub_frameClass);
 		pub_addClass(element, pub_config.ontabClass);
 		pub_delClass(element, pub_config.ontapClass);
 		pub_delClass(element, pub_config.otherClass);
@@ -135,6 +152,7 @@ var pub_return = {
 		pub_return.ontab = false;
 		pub_return.ontap = true;
 		pub_return.other = false;
+		pub_addClass(element, pub_frameClass);
 		pub_delClass(element, pub_config.ontabClass);
 		pub_addClass(element, pub_config.ontapClass);
 		pub_delClass(element, pub_config.otherClass);
@@ -147,6 +165,7 @@ var pub_return = {
 		pub_return.ontab = false;
 		pub_return.ontap = false;
 		pub_return.other = true;
+		pub_addClass(element, pub_frameClass);
 		pub_delClass(element, pub_config.ontabClass);
 		pub_delClass(element, pub_config.ontapClass);
 		pub_addClass(element, pub_config.otherClass);
@@ -217,6 +236,12 @@ var ontabListener = function(event, check){
 	
 	if(check === true){
 		
+		if(pub_isModifiable(event.target) === true){
+			if(pub_config.modifiableTag === 'ontab'){ return ontabListener(event, false) };
+			if(pub_config.modifiableTag === 'ontap'){ return ontapListener(event, false) };
+			if(pub_config.modifiableTag === 'other'){ return otherListener(event, false) };
+		};
+		
 		for(index=0, length=pub_config.ontapAlways.length; index<length; index++){
 			if(event.target.matches(pub_config.ontapAlways[index]) === true){
 				ontapListener(event, false); stop = true; break; }; };
@@ -243,7 +268,11 @@ var ontapListener = function(event, check){
 	
 	if(check === true){
 		
-		if(pub_isModifiable(event.target) === true){ return ontabListener(event, false) };
+		if(pub_isModifiable(event.target) === true){
+			if(pub_config.modifiableTag === 'ontab'){ return ontabListener(event, false) };
+			if(pub_config.modifiableTag === 'ontap'){ return ontapListener(event, false) };
+			if(pub_config.modifiableTag === 'other'){ return otherListener(event, false) };
+		};
 		
 		for(index=0, length=pub_config.ontabAlways.length; index<length; index++){
 			if(event.target.matches(pub_config.ontabAlways[index]) === true){
@@ -271,7 +300,11 @@ var otherListener = function(event, check){
 	
 	if(check === true){
 		
-		if(pub_isModifiable(event.target) === true){ return ontabListener(event, false) };
+		if(pub_isModifiable(event.target) === true){
+			if(pub_config.modifiableTag === 'ontab'){ return ontabListener(event, false) };
+			if(pub_config.modifiableTag === 'ontap'){ return ontapListener(event, false) };
+			if(pub_config.modifiableTag === 'other'){ return otherListener(event, false) };
+		};
 		
 		for(index=0, length=pub_config.ontabAlways.length; index<length; index++){
 			if(event.target.matches(pub_config.ontabAlways[index]) === true){
@@ -473,7 +506,7 @@ pub_win.addEventListener('focus', function(event){
 
 // 触发 blur 先检测触发节点是否为 window，是则 windowBlurring 为 true，再聚焦就是 automaticFocus
 // 接着将所有的状态都改为 false，并通过 querySelectorAll()，尝试选中并去掉所有可能存在的相关类名
-var pub_ontabNodes, pub_ontapNodes, pub_otherNodes;
+var pub_frameNodes, pub_ontabNodes, pub_ontapNodes, pub_otherNodes;
 pub_win.addEventListener('blur', function(event){
 	
 	// 用于检测节点失焦之后的表现，输出目标的节点名称
@@ -488,10 +521,15 @@ pub_win.addEventListener('blur', function(event){
 	pub_return.other = false;
 	pub_return.ontab = false;
 	pub_return.ontap = false;
+	
 	if(pub_config.debug === true){ return };
+	
+	pub_frameNodes = pub_doc.querySelectorAll('.'+pub_frameClass);
 	pub_ontabNodes = pub_doc.querySelectorAll('.'+pub_config.ontabClass);
 	pub_ontapNodes = pub_doc.querySelectorAll('.'+pub_config.ontapClass);
 	pub_otherNodes = pub_doc.querySelectorAll('.'+pub_config.otherClass);
+	
+	if(pub_frameNodes.length > 0){ Array.prototype.forEach.call(pub_frameNodes, function(node){ pub_delClass(node, pub_frameClass) }) };
 	if(pub_ontabNodes.length > 0){ Array.prototype.forEach.call(pub_ontabNodes, function(node){ pub_delClass(node, pub_config.ontabClass) }) };
 	if(pub_ontapNodes.length > 0){ Array.prototype.forEach.call(pub_ontapNodes, function(node){ pub_delClass(node, pub_config.ontapClass) }) };
 	if(pub_otherNodes.length > 0){ Array.prototype.forEach.call(pub_otherNodes, function(node){ pub_delClass(node, pub_config.otherClass) }) };
