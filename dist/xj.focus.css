@@ -1,4 +1,4 @@
-/** xj.focus(区分聚焦模式) | V0.3.1 | Apache Licence 2.0 | 2018-2021 © XJ.Chen | https://github.com/xjZone/xj.focus */
+/** xj.focus(区分聚焦模式) | V0.3.2 | Apache Licence 2.0 | 2018-2021 © XJ.Chen | https://github.com/xjZone/xj.focus */
 
 /* 在 tap 模式下，取消所有的聚焦 outline 外边框，在 tab 模式下，取消所有聚焦 outline 并且使用 */
 /* box-shadow 制造外边框，因为和 outline 一样不占位置但又能实现圆角，虽然在 Safari 中可能无效 */
@@ -9,5 +9,14 @@
 /* 不是所有环境都会重置表单控件的样式，所以外边框只好改用 outline，这样做的缺点是无法实现圆角 */
 .xj-focus-outline.xj-focus-ontap:focus{outline:0;}
 .xj-focus-outline.xj-focus-ontab:focus{outline:2px solid rgba(51,153,255,0.75);outline-offset:0;}
+
+/* 由于 audio 标签和 video 标签无法捕捉到鼠标和键盘事件，所以无法判断出聚焦是由哪种行为导致的 */
+/* 插件只好将这两个标签的所有聚焦行为都判断为是鼠标点击导致的，所以聚焦的时候不会显示出外边框 */
+/* 这里用 CSS4 的 :focus-visible 伪类选择器做补充，Firefox85+ 和 Chrome86+ 开始支持这个选择器 */
+/* 支持这个选择器的时候使用键盘聚焦还是能显示出外边框的，但是使用鼠标点击的时候就不显示外边框 */
+audio.xj-focus-shadow:focus:focus-visible,
+video.xj-focus-shadow:focus:focus-visible{outline:0;box-shadow:0 0 0 2px rgba(51,153,255,0.75);}
+audio.xj-focus-outline:focus:focus-visible,
+video.xj-focus-outline:focus:focus-visible{outline:2px solid rgba(51,153,255,0.75);outline-offset:0;}
 
 

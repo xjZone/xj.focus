@@ -1,4 +1,4 @@
-/** xj.focus(区分聚焦模式) | V0.3.1 | Apache Licence 2.0 | 2018-2021 © XJ.Chen | https://github.com/xjZone/xj.focus */
+/** xj.focus(区分聚焦模式) | V0.3.2 | Apache Licence 2.0 | 2018-2021 © XJ.Chen | https://github.com/xjZone/xj.focus */
 ;(function(global, factory){
 	if(typeof(define) === 'function' && (define.amd !== undefined || define.cmd !== undefined)){ define(factory) }
 	else if(typeof(module) !== 'undefined' && typeof(exports) === 'object'){ module.exports = factory() }
@@ -22,7 +22,7 @@ var pub_hasClass,pub_addClass,pub_delClass;!function(){pub_hasClass=function(a,b
 var pub_global = (typeof(globalThis) !== 'undefined' ? globalThis : typeof(window) !== 'undefined' ? window : typeof(self) !== 'undefined' ? self : global);
 
 // public nothing, version, keyword
-var pub_nothing = function(){}, pub_version = '0.3.1', pub_keyword = 'focus';
+var pub_nothing = function(){}, pub_version = '0.3.2', pub_keyword = 'focus';
 
 // public config, advance set
 var pub_config = {
@@ -184,7 +184,8 @@ var pub_sameTarget = function(focusTarget){			// 判断 tap 和 focus 是否同�
 	var result = false;
 	var element = pub_ontapNode;
 	
-	while(result === false && element !== null && element.nodeType === 1){
+	while(result === false && element !== null 
+	&& element !== undefined && element.nodeType === 1){
 		if( /^label$/i.test( element.nodeName ) === true 
 		|| element === focusTarget){ result = true }
 		else{ element = element.parentElement };
@@ -521,7 +522,6 @@ pub_win.addEventListener('blur', function(event){
 	pub_return.other = false;
 	pub_return.ontab = false;
 	pub_return.ontap = false;
-	
 	if(pub_config.debug === true){ return };
 	
 	pub_frameNodes = pub_doc.querySelectorAll('.'+pub_frameClass);

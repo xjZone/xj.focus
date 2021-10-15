@@ -344,32 +344,7 @@
 
 
 <section>
-<h2>额外的样式设置01</h2>
-<p>下面的这段样式代码是可选的，所以 xj.focus 插件并没有将它写入 xj.focus.css 文件，在之前我们有提到由于 audio 标签和 video 标签的鼠标和键盘事件无法被监听到，所以无法判断到聚焦究竟是由什么操作导致的，插件只能是统一判断为是点击导致的，所以总是不会显示出外边框，这个缺陷可以借助 CSS4 的 :focus-visible 伪类选择器来解决，当然大前提是浏览器得能够支持这个选择器，你可以自行的选用：</p>
-
-<textarea class="xjDemo" xjDemo="{onlySource:true}">
-<style>
-/* 由于 audio 标签和 video 标签无法捕捉到鼠标和键盘事件，所以无法判断出聚焦是由哪种行为导致的 */ 
-/* 插件只好将这两个标签的所有聚焦行为都判断为是鼠标点击导致的，所以聚焦的时候不会显示出外边框 */ 
-
-/* 这里用 CSS4 的 :focus-visible 伪类选择器做补充，Firefox85+ 和 Chrome86+ 开始支持这个选择器 */ 
-/* 支持这个选择器的时候使用键盘聚焦还是能显示出外边框的，但是使用鼠标点击的时候就不显示外边框 */
-
-audio.xj-focus-shadow:focus:focus-visible, 
-video.xj-focus-shadow:focus:focus-visible{outline:0;box-shadow:0 0 0 2px rgba(51,153,255,0.75);}
-
-audio.xj-focus-outline:focus:focus-visible, 
-video.xj-focus-outline:focus:focus-visible{outline:2px solid rgba(51,153,255,0.75);outline-offset:0;}
-</style>
-</textarea>
-
-<hr />
-</section>
-
-
-
-<section>
-<h2>额外的样式设置02</h2>
+<h2>额外的样式设置</h2>
 <p>下面的两段样式都是属于可选的，前者用于去掉 Firefox 在聚焦后显示的多余边框，后者用于避免 Firefox(MacOS) 在聚焦后边框样式变成 ThreeDLightShadow 导致边框和外边框混在一起的问题，实际上不少框架如 Bootstrap 或 ElementUI 等都会帮我们完成这些样式重置的工作，所以实际上你未必需要用到它们，尤其是第二段代码，如果你已经定义过这些表单控件的边框，那就不需要再设置了，你可以自行选用：</p>
 
 <textarea class="xjDemo" xjDemo="{onlySource:true}">
@@ -402,11 +377,11 @@ video.xj-focus-outline:focus:focus-visible{outline:2px solid rgba(51,153,255,0.7
 
 <script>
 // 没使用 requirejs 或者 seajs 进行模块化处理时，可用全局中的 xj.focus 对象，否则是 require(['xj.focus'], function(xs){ console.log(xs) }) 这样了
-// 可在引入插件前，通过 xj.focusOption['0.3.1'] 进行全局配置，通过 xj.focusConfig['0.3.1'] 进行参数预设，注意中括号后的版本号要和当前插件版本相同
+// 可在引入插件前，通过 xj.focusOption['0.3.2'] 进行全局配置，通过 xj.focusConfig['0.3.2'] 进行参数预设，注意中括号后的版本号要和当前插件版本相同
 // if(window.xj === undefined){ xj = {} };
 // if(xj.focusConfig === undefined){ xj.focusConfig = {} };
-// xj.focusConfig['0.3.1'] = { debug : true, frameStyle : 'outline', modifiableTag : 'auto', 
-// ontapAlways : ((document.documentMode !== undefined || /Apple/i.test(navigator.vendor) === true) ? [] : ['audio', 'video']), };
+// xj.focusConfig['0.3.2'] = { debug : true, frameStyle : 'outline', modifiableTag : 'auto', 
+// ontapAlways : ((/MSIE|Edge|Trident/i.test(navigator.userAgent) === true || /Apple/i.test(navigator.vendor) === true) ? [] : ['audio', 'video']), };
 </script>
 
 <script>document.write('<link rel="stylesheet" href="../dist/xj.focus.css?timeStamp='+ Date.now() +'" />')</script>
@@ -419,7 +394,7 @@ console.log(xj.focus);
 // xj.focus 对象，三个方法都可以通过传入节点，来让这个节点进入 focus 状态
 // 实际不会真有 focus 操作，只是节点上会出现对应的类名，如 xj-focus-ontab
 // {
-// 	version : '0.3.1',				// 当前插件和配置的版本号
+// 	version : '0.3.2',				// 当前插件和配置的版本号
 // 	
 // 	ontab : false,					// 当前是否在 ontab 状态下
 // 	ontap : false,					// 当前是否在 ontap 状态下
