@@ -11,9 +11,9 @@
 
 **协议** : [Apache License 2.0](https://github.com/xjZone/xj.focus/blob/master/LICENSE)  
 
-<!-- ————
+————
 
 **推荐阅读 :**  
-XJ.Chen - [浅谈 :focus 伪类选择器和聚焦后 outline 边框的设置问题](https://juejin.cn/post/????))   -->
+XJ.Chen - [浅谈 :focus 伪类选择器和聚焦后 outline 边框的设置问题](https://juejin.cn/post/7179149715458490405)  
 
 
