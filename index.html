@@ -1,20 +1,561 @@
 <!doctype html>
-<html>
+<html lang="zh-cmn-hans">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<meta name="renderer" content="webkit" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+<script src="./static/cj/xj.plugins.setting.js?ver=2022-12-16T05:16:20UTC+8"></script>
+
+<meta name="viewport" xj-viewport="{minWidth:400, }" content="width=device-width,initial-scale=1" />
+<script src="https://cdn.jsdelivr.net/gh/xjZone/xj.viewport@0.3.2/dist/xj.viewport.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/gh/xjZone/xj.storage@0.2.2/dist/xj.storage.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/xjZone/xj.operate@0.6.0/dist/xj.operate.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xjZone/xj.ripple@0.5.0/dist/xj.ripple.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/xjZone/xj.ripple@0.5.0/dist/xj.ripple.min.js"></script>
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net
+/gh/xjZone/xj.focus@0.4.0/dist/xj.focus.min.css" /> -->
+<!-- <script src="https://cdn.jsdelivr.net/gh/xjZone/
+xj.focus@0.4.0/dist/xj.focus.min.js"></script> -->
+<link rel="stylesheet" href="./dist/xj.focus.min.css" />
+<script src="./dist/xj.focus.min.js"></script>
+
+<link rel="stylesheet" href="./static/plugin/xj.base/0.4.0/dist/xj.base.min.css" />
+<script src="./static/plugin/xj.base/0.4.0/dist/xj.base.min.js"></script>
+
+<script>document.addEventListener('DOMContentLoaded', function( ){ FastClick.attach(document.body) }, false);</script>
+<script src="https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/all.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js"></script>
+
+<script src="./static/plugin/xjArrive/0.3.2/dist/xjArrive.min.js"></script>
+
+<link id="prism-theme-white" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-material-light.min.css" />
+<link id="prism-theme-black" rel="alternate stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.25.0/themes/prism-okaidia.min.css" />
+<script data-manual="prevent prism auto highlighted pre or code" src="https://cdn.jsdelivr.net/npm/prismjs@1.25.0/prism.min.js"></script>
+
+<link rel="stylesheet" href="./static/plugin/xjDemo/0.1.0/dist/xjDemo.min.css" />
+<script src="./static/plugin/xjDemo/0.1.0/dist/xjDemo.min.js"></script>
+
+<link rel="stylesheet" href="./static/plugin/xjScroll/0.4.0/dist/xjScroll.min.css" />
+<script src="./static/plugin/xjScroll/0.4.0/dist/xjScroll.min.js"></script>
+
+<link rel="stylesheet" href="./static/plugin/xjDir/0.2.0/dist/xjDir.min.css" />
+<script src="./static/plugin/xjDir/0.2.0/dist/xjDir.min.js"></script>
+
+<!-- ↑ Public | Private ↓ -->
+
+<link rel="stylesheet" href="./static/cj/index.css?ver=2022-12-16T05:16:20UTC+8" />
+<script src="./static/cj/index.js?ver=2022-12-16T05:16:20UTC+8"></script>
+<!-- <script>document.write('<link rel="stylesheet" href="./static/cj/index.css?timeStamp='+ Date.now() +'" />')</script>
+<script>document.write('<script src="./static/cj/index.js?timeStamp='+ Date.now() +'"><\/script>')</script> -->
+
 <title>xj.focus</title>
 </head>
 <body>
 
 
 
-<a href="../">../</a><br />
-<a href="dist">dist</a><br />
-<a href="page">page</a><br />
-<a href="server">server</a><br />
-<a href="static">static</a><br />
+<div id="pub_side">
+	<div id="pub_sidePack">
+		<div id="pub_sideMask"></div>
+		<div id="pub_sideWrap">
+			
+			<div class="xjScroll" id="xjScroll01" xjScroll="{native:true, resizeCallbackType:'none', }" style="width:100%;height:100%;">
+				<div class="xjDir" id="xjDir01" xjDir="{}" style="padding:8px;width:100%;border-right:none;font-family:inherit;">
+					<ul>
+						<li class="xjDir-spread xjDir-active">
+							<a href="javascript:void(0)" id="xjDir01_back_start_point">
+								<i class="xjDir-icon fas fa-arrows-to-dot"></i>
+								<i class="xjDir-text">xj.focus</i>
+							</a>
+							<a href="javascript:void(0)"><i class="xjDir-sign"></i></a>
+							<ul id="xjDir01_ul01"></ul>
+						</li>
+						
+						<li class="xjDir-divide"></li>
+						
+						<li class="xjDir-spread">
+							<a target="_blank" href="https://github.com/xjZone">
+								<i class="xjDir-icon fas fa-cubes"></i>
+								<i class="xjDir-text">xjZone</i>
+							</a>
+							<a href="javascript:void(0)"><i class="xjDir-sign"></i></a>
+							<ul id="xjDir01_ul02"></ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+
+
+<div id="pub_head">
+	<div id="pub_headPack">
+		<h1 id="pub_headText"><a class="a-unset" href="">xj.focus<small> 区分聚焦模式</small></a></h1>
+		
+		<form id="pub_headForm" target="_blank" enctype="text/plain" title="Press Enter to Search" action="https://github.com/xjZone/xj.focus/search">
+			<input id="pub_headFormText" class="input-plain" name="q" type="search" autocomplete="off" placeholder="Search" />
+			<label id="pub_headFormIcon" class="fas fa-search" for="pub_headFormText"></label>
+		</form>
+		
+		<a id="pub_headCode" class="button" title="Get Source from GitHub" target="_blank" 
+		 href="https://github.com/xjZone/xj.focus/"> <i class="fab fa-github"></i> </a>
+	</div>
+</div>
+
+
+
+<main id="pub_main">
+<div id="pub_mainPack">
+
+
+
+<section>
+<h2>基本介绍</h2>
+
+<p><b>简介</b> : 这个插件主要用于判断标签的聚焦方式，如果聚焦是由鼠标或触屏的点击导致的，被聚焦的标签会被添加 <code>xj-focus-ontap</code> 的类名，如果聚焦是由于按了键盘的 Tab 键导致的，被聚焦的标签会被添加 <code>xj-focus-ontab</code> 的类名，你可以简单的将这个插件当作是 <code>:focus-visible</code> 伪类的 Polyfill 方案，用它来区分设置不同聚焦方式下的 <code>outline</code> 外边框，为用户提供更好的样式和交互体验。</p>
+
+<p><b>兼容</b> : IE10+ / Edge12+ / Firefox / Chrome / Safari / Opera / IOS Webkit / Android Platform</p>
+
+<p><b>更新</b> : <a target="_blank" href="https://github.com/xjZone/xj.focus/blob/master/upgrade.md">https://github.com/xjZone/xj.focus/blob/master/upgrade.md</a></p>
+
+<p><b>源码</b> : <a target="_blank" href="https://github.com/xjZone/xj.focus/">https://github.com/xjZone/xj.focus/</a></p>
+
+<p><b>协议</b> : <a target="_blank" href="https://github.com/xjZone/xj.focus/blob/master/LICENSE">Apache License 2.0</a></p>
+
+<p><b>版本</b> : <select class="select-unset"><option selected="selected">0.4.0</option></select></p>
+
+<hr />
+</section>
+
+
+
+<section>
+<h2>引入插件</h2>
+<p>首先是引入相关的文件，推荐使用带 <a target="_blank" href="https://www.cnblogs.com/ziyunfei/p/5642796.html" class="">immutable</a> 的 <a target="_blank" href="https://www.jsdelivr.com/">JSDelivr</a> CDN：</p>
+
+<textarea class="xjDemo" xjDemo="{onlySource:true}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xjZone/xj.focus@0.5.0/dist/xj.focus.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/xjZone/xj.focus@0.5.0/dist/xj.focus.min.js"></script>
+</textarea>
+
+<hr />
+</section>
+
+
+
+<section>
+<h2>常规标签</h2>
+<p>在引入插件之后，那些可被聚焦的元素，如果是通过点击导致的聚焦，就不会显示出外边框，如果是通过键盘的 Tab 键导致的聚焦，就会显示出外边框，但允许用户输入的那些可编辑的元素如 <code>input[type="text"]</code> 或 <code>textarea</code> 是例外，它们被聚焦的时候总会显示出外边框，这和 <code>:focus-visible</code> 伪类的表现是相同的，但这种特例你也可以通过 <a href="#配置列表"># 配置列表</a> 里的 <code>ontabSelector</code> 参数进行修改。</p>
+
+<textarea class="xjDemo" xjDemo="{}">
+<p>点击导致的聚焦不显示外边框，使用 <kbd>Tab</kbd> 键聚焦会显示出外边框。</p>
+<p>
+	<span tabIndex="0">span[tabIndex="0"]</span>
+	<a href="javascript:void(0);">anchor</a>
+	<button type="button">button</button>
+	<input type="text" placeholder="text" />
+</p>
+</textarea>
+
+<hr />
+</section>
+
+
+
+<section>
+<h2>媒体标签</h2>
+<p>根据 <a target="_blank" href="https://html.spec.whatwg.org/multipage/media.html#user-interface">whatwg</a> 描述，<code>audio</code> 和 <code>video</code> 标签的点击事件和键盘事件都不会传递到上层，也就是无法冒泡或捕获，这导致我们无法根据用户的操作方式来判断聚焦的形式，插件采取的做法是将它们的聚焦都当作由点击导致，所以不显示外边框，再用 <code>:focus-visible</code> 这个伪类选择器进行补充设置，如果你想了解更多相关信息或者希望改变这个设置，可以查看 <a href="#配置列表"># 配置列表</a> 里的 <code>ontapSelector</code> 参数。</p>
+
+<textarea class="xjDemo" xjDemo="{}">
+<!-- IE, Edge 和 Safari 其实一直没遵循标准，所以这些浏览器的事件还是可以传递的，
+但较新的 Firefox 和 Chrome 遵循标准，所以就没法通过事件来判断导致聚焦的原因 -->
+<p>
+	<audio controls="controls" preload="metadata" style="width:320px;" 
+	type="audio/mpeg" src="./static/media/01234567.mp3"></audio><br />
+</p>
+<p>
+	<video controls="controls" preload="metadata" 
+	width="320" height="180" poster="./static/image/poster.gif" 
+	type="video/mp4" src="./static/media/01234567.mp4"></video>
+</p>	
+</textarea>
+
+<hr />
+</section>
+
+
+
+<section>
+<h2>异形标签</h2>
+<p>两个特殊的标签 <code>svg a</code> 和 <code>map area</code>，由于它们可能呈现不规则形状，所以如果对它们的设置 <code>outline</code> 或 <code>box-shdoaw</code> 样式，在 IE 和 Firefox 中可能不会生效，且可能导致浏览器原本自带的聚焦样式失效，考虑到兼容，所以插件没对它们设置聚焦样式，聚焦后的样式会保持浏览器的默认状态，如果你不需要兼容 IE 或 Firefox，可以通过 <a href="#配置列表"># 配置列表</a> 里的 <code>otherSelector</code> 参数进行控制。</p>
+
+<textarea class="xjDemo" xjDemo="{}">
+<p>
+	<svg style="display:inline-block;vertical-align:top;width:192px;height:50px;border:1px solid #ccc;">
+		<a href="javascript:void(0)">
+			<rect x="10" y="10" width="172" height="28" fill="#f0f0f0"></rect>
+			<text x="20" y="28" font-size="14">anchor>text</text>
+		</a>
+	</svg>
+</p>
+<p>
+	<img useMap="#map01" src="./static/image/area.gif" />
+	<map id="map01" name="map01">
+		<area title="rect" alt="rect" shape="rect" coords="8,8,56,56" href="javascript:void(0)" />
+		<area title="circle" alt="circle" shape="circle" coords="96,32,24" href="javascript:void(0)" />
+		<area title="poly" alt="poly" shape="poly" coords="160,8,184,56,136,56" href="javascript:void(0)" />
+	</map>
+</p>
+</textarea>
+
+<hr />
+</section>
+
+
+
+<section>
+<h2>参数设置</h2>
+<p>插件提供了一些参数，用于定义聚焦的各种细节，而这些参数都可通过使用目标容器上的 <code>xj-focus="{}"</code> 这个内联属性来完成设置，下面是一个简单的例子，使用 <code>ontabAlways</code> 参数可让聚焦总被当作是按了 Tab 键导致的，从而显示出外边框，使用 <code>ontapAlways</code> 参数可让聚焦总被当作是通过点击导致的，从而不显示外边框，使用 <code>otherAlways</code> 参数可让插件什么也不做，保持浏览器默认状态。</p>
+
+<textarea class="xjDemo" xjDemo="{}">
+<input type="text" xj-focus="{ontabAlways:true}" value="聚焦总显示外边框" />
+<input type="text" xj-focus="{ontapAlways:true}" value="聚焦不显示外边框" />
+<input type="text" xj-focus="{otherAlways:true}" value="用浏览器默认边框" />
+</textarea>
+
+<hr />
+</section>
+
+
+
+<section>
+<h2>测试状态</h2>
+<p>默认的情况下，当节点失焦后插件设置的相关类名就会同时被移除，这是为了避免聚焦状态继续被延续，但立即移除相关类名也导致了我们很难在 DevTool 面板中检查并调试它，所以插件提供了 <code>debug</code> 参数，当这个参数被设为 <code>true</code> 时，类名就不会被自动移除了，正如下面的例子中，第二个 <code>input[type="text"]</code> 由于设置了 <code>debug:true</code> 参数，所以在节点失焦之后插件相关的类名也不会被移除。</p>
+
+<textarea class="xjDemo" xjDemo="{}">
+<input xj-focus="{debug:false}" type="text" value="失焦后不保留类名" />
+<input xj-focus="{debug:true}" type="text" value="失焦后会保留类名" />
+</textarea>
+
+<hr />
+</section>
+
+
+
+<section>
+<h2>边框选择</h2>
+<p>插件提供了 <code>style</code> 参数，用于控制生成外边框所使用的样式，该参数默认值是 <code>'auto'</code>，也就是除 Safari 之外的浏览器，默认都使用 <code>box-shadow</code> 样式来生成外边框，这是因为 <code>box-shadow</code> 能兼容圆角，而 Safari 则默认使用 <code>outline</code> 样式来生成外边框，这是因为 Safari 的表单控件没设置 <code>-webkit-appearance:none;</code> 则 <code>box-shadow</code> 样式就无法生效，下面是使用这些参数的简单案例。</p>
+
+<textarea class="xjDemo" xjDemo="{}">
+<input type="text" xj-focus="{style:'shadow'}" value="shadow 生成边框" />
+<input type="text" xj-focus="{style:'outline'}" value="outline 生成边框" />
+</textarea>
+
+<hr />
+</section>
+
+
+
+<section>
+<h2>内嵌模式</h2>
+<p>聚焦元素所在的父节点被设置了 <code>overflow:hidden;</code>，那么聚焦后外边框就可能被裁剪而看不到，此时可使用 <code>inset:true</code> 的设置，来让边框变成内嵌模式，这样就不用担心因为裁剪而看不到的问题了，Firefox 默认的表单控件被设置了<code>background-color:field;</code>，此时 <code>inset</code> 模式的 <code>box-shadow</code> 样式会无效，因此当使用了 <code>style:'auto'</code> 时，Firefox 会自动改用 <code>outline</code> 来生成内边框。</p>
+
+<textarea class="xjDemo" xjDemo="{}">
+<div style="display:inline-block;vertical-align:top;overflow:hidden;">
+	<input type="text" xj-focus="{inset:false,}" value="边框被裁剪" />
+</div>
+<div style="display:inline-block;vertical-align:top;overflow:hidden;">
+	<input type="text" xj-focus="{inset:true, }" value="内嵌式边框" />
+</div>
+</textarea>
+
+<hr />
+</section>
+
+
+
+<section>
+<h2>参数继承</h2>
+<p>内联属性 <code>xj-focus="{}"</code> 不是非得设置在被聚焦的节点上，其实设置在目标节点的上层节点也是可以的，只要 <code>inherit</code> 参数不明文设为 <code>false</code>，那么这个内联属性的设置就可被继承，当目标节点和它的上层节点设置了同个属性时，层级越低的属性权重越高，继承的好处是如果想定义某个区域的边框，无需逐个设置，只需要设置父容器然后继承就行，下例展示了通过继承设置不同的 <code>inset</code> 参数。</p>
+
+<textarea class="xjDemo" xjDemo="{}">
+<div style="display:inline-block;vertical-align:top;overflow:hidden;" xj-focus="{inset:true, }">
+	<input type="text" xj-focus="{inherit:false, }" value="不继承设置" />
+</div>
+<div style="display:inline-block;vertical-align:top;overflow:hidden;" xj-focus="{inset:true, }">
+	<input type="text" xj-focus="{inherit:true,  }" value="继承的设置" />
+</div>
+</textarea>
+
+<hr />
+</section>
+
+
+
+<section>
+<h2>针对 Firefox 的设置</h2>
+<p>下面的两段样式都是属于可选的，前者用于去掉 Firefox 聚焦后显示的多余边框，后者用于避免 Firefox(MacOS) 在聚焦后边框样式变成 <code>ThreeDLightShadow</code> 导致边框和外边框混在一起的问题，实际上不少框架如 Bootstrap 或 ElementUI 等都会帮我们完成这些样式重置的工作，所以实际上你也未必需要用到它们，尤其是第二段代码，如果你已经定义过这些表单控件的边框，那就不需要再设置了。</p>
+
+<textarea class="xjDemo" xjDemo="{onlySource:true}">
+<style>
+/* Firefox 部分标签被聚焦后，会出现一些多余的边框，一般是和 ::-moz-focus-inner 伪元
+素选择器结合到一起，我们可将这些边框清掉，避免重复，很多框架如 Bootstrap 或样式重置
+项目如 Normalize，都会帮我们进行这种清除设置，所以实际上你也未必需要再次设置它们 */
+@supports (-moz-appearance:none){
+	*::-moz-focus-inner{border:0;}
+}
+
+/* MacOS 的 Firefox，当表单控件被聚焦时，边框颜色会变成 ThreeDLightShadow，结果可能
+会导致外边框的重叠，所以我们得对这些表单控件做一个特殊设置，修改掉它的默认边框颜色，
+以下是 MacOS 上 Firefox 的 hack 写法，但如果你已经定义过控件边框，那这段就不用了 */
+@supports (-moz-osx-font-smoothing:auto){
+	input:focus,
+	button:focus,
+	select:focus,
+	textarea:focus{
+		border-color:#ccc;
+	}
+}
+</style>
+</textarea>
+
+<hr />
+</section>
+
+
+
+<section>
+<h2>自定义边框的样式</h2>
+<p>xj.focus 主要用于区分 <code>focus</code> 事件的触发模式，至于说插件所提供的 xj.focus.css 样式文件，其实未必合适你的项目，毕竟不同项目的主色调都不一样，好在这个文件也不复杂，你可以选择忽略这个文件，然后自己重新定义一些更合适你的项目的样式规则，下面的代码就是 xj.focus.css 文件的所有内容了，如果不喜欢这个 <code>#3399ff</code> 既 <code>rgba(51,153,255,0.750);</code> 蓝色，就自定义其他的颜色吧。</p>
+
+<textarea class="xjDemo" xjDemo="{onlySource:true}">
+<style>
+/* 在 tap 模式下，取消所有的聚焦 outline 外边框，在 tab 模式下，设置聚焦后显示 outline 外边框 */
+/* 使用阴影制造外边框，不占位置又能实现圆角，但 inset 模式可能会被子元素遮挡，Safari 可能无效 */
+/* Safari 的表单控件不理会 box-shadow，除非有设置 -webkit-appearance:none，但这样控件又会异常 */
+/* 不是所有环境都会有重置表单控件的样式，所以默认情况下，Safari 在插件中会用 outline 做外边框 */
+
+.xj-focus-ontap.xj-focus-shadow:focus{outline:0 solid rgba(255, 255, 255, 0);}
+.xj-focus-ontab.xj-focus-shadow:focus{outline:0;box-shadow:0 0 0 2px rgba(51,153,255,0.750);}
+.xj-focus-ontab.xj-focus-shadow.xj-focus-inset:focus{outline:0;box-shadow:0 0 0 2px rgba(51,153,255,0.750) inset;}
+
+/* IE11- & Edge18- & Safari16.2- 并不支持 outline 圆角，IE11- & Edge14- 不支持 outline-offset */
+/* Safari 聚焦自带 outline-offset:-2px 需要清掉，Firefox88+ & Chrome94+ 开始支持 outline 圆角 */
+/* 目标节点的父节点设置了 overflow:hidden 则 outline 或 box-shadow 生成的外边框就可能会看不见 */
+/* 此时可启用内嵌模式 inset，但 IE14- 不支持 outline-offset，而内嵌 shadow 可能会被子元素遮挡 */
+
+.xj-focus-ontap.xj-focus-outline:focus{outline:0;}
+.xj-focus-ontab.xj-focus-outline:focus{outline:2px solid rgba(51,153,255,0.750);}
+.xj-focus-ontab.xj-focus-outline:not(.xj-focus-inset):focus{outline-offset:0;}
+.xj-focus-ontab.xj-focus-outline.xj-focus-inset:focus{outline-offset:-2px;}
+
+/* audio & video 的键鼠事件按照标准不会传递(不冒泡也不能捕获)，因此没法判断聚焦由哪种行为触发 */
+/* 较新的 Firefox 和 Chrome 都是符合标准的做法，但是 IE & EDGE 和 Safari 一直都没按照标准执行 */
+
+/* 不符合标准的浏览器，audio & video 可用 JS 判断是哪种行为导致聚焦，但符合标准的浏览器则不行 */
+/* 插件专门为 Firefox & Chrome 特别调整 ontapSelector 配置，既 audio & video 聚焦不显示外边框 */
+/* 然后这里用 :focus-visible 选择器补充，Firefox85 和 Chrome86 和 Safari15.4 开始支持该选择器 */
+/* 支持这个选择器的时候使用键盘聚焦还是能显示出外边框的，但是使用鼠标点击的时候就不显示外边框 */
+
+/* 因此最后结果是，IE & Edge 和 Safari 使用 JS 判断，而 Firefox85+ 和 Chrome86+ 使用 CSS 实现 */
+/* Safari 的 JS 和 CSS 功能重叠但不影响结果，只剩 Firefox84- & Chrome85- 用键盘聚焦不显外边框 */
+
+audio.xj-focus-shadow:focus:focus-visible{outline:0;box-shadow:0 0 0 2px rgba(51,153,255,0.750);}
+audio.xj-focus-shadow.xj-focus-inset:focus:focus-visible{outline:0;box-shadow:0 0 0 2px rgba(51,153,255,0.750) inset;}
+
+audio.xj-focus-outline:focus:focus-visible{outline:2px solid rgba(51,153,255,0.750);}
+audio.xj-focus-outline:not(.xj-focus-inset):focus:focus-visible{outline-offset:0;}
+audio.xj-focus-outline.xj-focus-inset:focus:focus-visible{outline-offset:-2px;}
+
+video.xj-focus-shadow:focus:focus-visible{outline:0;box-shadow:0 0 0 2px rgba(51,153,255,0.750);}
+video.xj-focus-shadow.xj-focus-inset:focus:focus-visible{outline:0;box-shadow:0 0 0 2px rgba(51,153,255,0.750) inset;}
+
+video.xj-focus-outline:focus:focus-visible{outline:2px solid rgba(51,153,255,0.750);}
+video.xj-focus-outline:not(.xj-focus-inset):focus:focus-visible{outline-offset:0;}
+video.xj-focus-outline.xj-focus-inset:focus:focus-visible{outline-offset:-2px;}
+</style>
+</textarea>
+
+<hr />
+</section>
+
+
+
+<section>
+<h2>xj.focus 对象</h2>
+<p>全局中的 <code>xj.focus</code> 对象上存放着一些属性和方法，<code>version</code> 属性会返回当前插件的版本，<code>ontab</code>, <code>ontap</code>, <code>other</code> 这三个属性可用于判断当前聚焦的类型，<code>ontabSet()</code>, <code>ontapSet()</code>, <code>otherSet()</code> 这三个方法则是可让节点进入对应的 <code>focus</code> 状态，并不是说真的会有聚焦操作的表现，只是节点上会出现对应的类名而已，下面是一个例子，你得审查元素，才能在点击按钮后看到对应的结果。</p>
+
+<textarea class="xjDemo" xjDemo="{}">
+<p>
+	<button onclick="xj.focus.ontabSet(document.getElementById('text01'), {inset:true})"
+		type="button">xj.focus.ontabSet(text01, {inset:true})</button>
+	<input id="text01" type="text" placeholder="01" />
+</p>
+<p>
+	<button onclick="xj.focus.ontabSet(document.getElementById('text02'), {inset:true})"
+		 type="button">xj.focus.ontapSet(text01, {inset:true})</button>
+	<input id="text02" type="text" placeholder="02" />
+</p>
+<p>
+	<button onclick="xj.focus.ontabSet(document.getElementById('text03'), {inset:true})"
+		 type="button">xj.focus.otherSet(text01, {inset:true})</button>
+	<input id="text03" type="text" placeholder="03" />
+</p>
+</textarea>
+
+<hr />
+</section>
+
+
+
+<section>
+<h2>配置列表</h2>
+<p>以下 Demo 罗列了本插件所有可用的配置，并且展示了插件进行全局配置的具体操作方法，需要注意的是，全局配置得在引入插件之前就设置好，否则插件加载并执行的时候找不到配置，就会认为配置不存在，并且版本号也要对得上，否则插件也是不理会的，例如本页面使用的插件是 <code>0.4.0</code> 的版本，在 <code>xj.focusConfig</code> 对象后面跟着的就是 <code>['0.4.0']</code>，版本匹配是考虑到插件多版本并存而设计的。</p>
+
+<textarea class="xjDemo" xjDemo="{result:false, larger:true}">
+<script>
+// 中括号里的是版本号
+if(window.xj === undefined){ xj = {} };
+if(xj.focusConfig === undefined){ xj.focusConfig = {} };
+xj.focusConfig['0.4.0'] = {
+	
+	classTarget : document.documentElement,     // 将被添加 existClass 配置的节点，默认是 html，不使用 body 是因为插件初始化的时候 body 可能还未加载，不推荐修改
+	existClass : 'xj-focus-exist',              // 初始化后 classTarget 配置会被添加的类名，默认是 'xj-focus-exist'，可用于在 CSS 中判断是否有本插件，不推荐修改
+	
+	ontabClass : 'xj-focus-ontab',              // 当使用键盘按下了 Tab 或方向键而实现聚焦时，被聚焦节点会添加该类名，默认是 'xj-focus-ontab'，不推荐修改，因为不少 xj 插件都默认只响应该类名，如果需要配置其他类名可在 ontabCallback 回调中设置
+	ontapClass : 'xj-focus-ontap',              // 当触发 touchstart 或 mousedown 实现聚焦时，被聚焦节点会添加该类名，默认是 'xj-focus-ontap'，不推荐修改，因为不少 xj 插件都默认只响应该类名，如果需要配置其他类名可在 ontapCallback 回调中设置
+	otherClass : 'xj-focus-other',              // 当聚焦不是操作键盘也不是以上两种 tap 导致，被聚焦节点会添加该类名，默认是 'xj-focus-other'，不推荐修改，因为不少 xj 插件都默认只响应该类名，如果需要配置其他类名可在 otherCallback 回调中设置
+	
+	outlineClass : 'xj-focus-outline',          // style 参数被设置为 'outline' 时，聚焦后节点会被添加的类名，默认是 'xj-focus-outline'，不推荐修改，因为插件默认的 CSS 文件只会响应该类名的样式，如果你配置成其他类名，就需要自己重新编写样式了
+	shadowClass : 'xj-focus-shadow',            // style 参数被设置为 'shadow' 时，聚焦后节点会被添加的类名，默认是 'xj-focus-shadow'，但不推荐修改，因为插件默认的 CSS 文件只会响应该类名的样式，如果你配置成其他类名，就需要自己重新编写样式了
+	insetClass : 'xj-focus-inset',              // inset 参数如果被设置为 true，聚焦后节点会被添加这个类名，默认是 'xj-focus-inset'，但是不推荐修改，因为插件默认的 CSS 文件只会响应该类名的样式，如果你配置成其他类名，就需要自己重新编写样式了
+	
+	// 不管是由哪种方式触发了 focus 事件，如果触发事件的元素，符合这个配置中的选择器，那就会进入 ontab 的状态，默认值为 ['textarea', 'in
+	// put:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="file"]):not([type="image"]):n
+	// ot([type="radio"]):not([type="checkbox"]):not([type="range"]):not([type="color"])']
+	// 基本原则就是，对于那些允许用户输入的元素，不管究竟是由哪种操作模式所导致的聚焦，总当作由 ontab 触发，也就是说聚焦时总会显示外边框
+	ontabSelector : ['textarea', 'input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="file"]):not([type="image"]):not([type="radio"]):not([type="checkbox"]):not([type="range"]):not([type="color"])'],
+	
+	// 不管是由哪种方式触发了 focus 事件，如果触发事件的元素，符合这个配置中的选择器，那就会进入 ontap 的状态，默认值为 (/MSIE|Trident|EDGE/i.te
+	// st(navigator.userAgent) || /Apple/i.test(navigator.vendor)) ? [] : ['audio', 'video']，也就是说面对 IE, Edge, Safari 就不进行任何特殊设置
+	// 而面对 Firefox & Chrome 则设定 audio, video 总为 ontap 的状态不显示外边框，这是因为 audio, video 根据标准，它们的键鼠事件都不会传递到上层
+	// 所以也就无法判断 focus 聚焦究竟是由什么操作模式导致的，只能统一当作点击导致不显示外边框，而 IE, Edge, Safari 因为没按标准所以反而能够判断
+	ontapSelector : (/MSIE|Trident|EDGE/i.test(navigator.userAgent) || /Apple/i.test(navigator.vendor)) ? [] : ['audio', 'video'],
+	
+	// 不管是由哪种方式触发了 focus 事件，如果触发事件的元素，符合这个配置中的选择器，那就会进入 other 的状态，将使用浏览器的默认边框，默认值为 ['svg a'
+	// , 'map area']，也就是在 svg 中的 a 或者 map 中的 area 总会进入 other 状态，这是因为这两种节点都不能在 :focus{ } 伪类选择器规则中设置 outline 或者
+	// box-shadow 的样式，设置不单不会生效，还会导致浏览器原本聚焦自带的外边框失踪，这样聚焦后就没外边框了，尤其是 IE 和 Firefox，所以只好将这它们都排除
+	// 这样当我们设置了 .xj-focus-ontab:focus{} 和 .xj-focus-ontap:focus{} 的样式规则，就不会对这个配置中对应的 a 和 area 生效了，让他们继续保持默认即可
+	otherSelector : ['svg a', 'map area'],
+	
+	// 允许用户输入的标签节点，除了 input 和 textarea 之外，还有那些被设置了 contentEditable="true" 属性的标签，以及那些被设置了 user-modify:'*write' 样式的标签
+	// modifiableTag 配置用于控制对这些标签的聚焦表现，默认值为 'ontab'，也就是说不管聚焦是由什么操作形式导致的，都会进入 ontab 模式，此时聚焦时总会显示出外边框
+	// 如果这里设置为 'ontap'，则是不管聚焦是由什么操作形式导致的，都会进入 ontap 模式，此时聚焦不显示出外边框，设置为 'other'，则不修改样式，保持浏览器默认状态
+	// 如果这里设置为 'auto'，则不做任何特殊处理，此时进入什么状态，取决于聚焦究竟是什么操作形式导致的，是点击导致就进入 ontap 状态，是键盘导致则进入 ontab 状态
+	modifiableTag : 'ontab',
+	
+};
+</script>
+</textarea>
+
+<hr />
+</section>
+
+
+
+<section>
+<h2>参数列表</h2>
+<p>以下 Demo 罗列了本插件所有可用的参数，并且展示了插件进行参数预设的具体操作方法，需要注意的是，参数预设得在引入插件之前就设置好，否则插件加载并执行的时候找不到预设，就会认为预设不存在，并且版本号也要对得上，否则插件也是不理会的，例如本页面使用的插件是 <code>0.4.0</code> 的版本，在 <code>xj.focusOption</code> 对象后面跟着的就是 <code>['0.4.0']</code>，版本匹配是考虑到插件多版本并存而设计的。</p>
+
+<textarea class="xjDemo" xjDemo="{result:false, larger:true}">
+<script>
+// 中括号里的是版本号
+if(window.xj === undefined){ xj = {} };
+if(xj.focusOption === undefined){ xj.focusOption = {} };
+xj.focusOption['0.4.0'] = {
+	
+	debug : false,                  // 是否进入调试模式，默认是 false，设为 true，则触发 blur 事件后，将不会自动删除 ontabClass 或 ontapClass 类名，方便进行测试
+	time : 250,                     // 在该时间内相继触发键盘或点击以及聚焦事件，就认为聚焦是自然触发的，而不是由于执行了节点的 focus() 方法而触发的，默认是 250
+	
+	style : 'auto',                 // 聚焦后外边框使用哪种样式，默认是 'auto'，也就是 Safari 和 inset 模式下的 Firefox 使用 'outline' 而其他情况下使用 'shadow'，这是因为 Safari 的表单控件不支持阴影，而 Firefox 的表单控件不支持 inset 的阴影
+	inset : false,                  // 聚焦后是否启用内嵌式边框，默认是 false，当聚焦节点所在容器设置 overflow:hidden; 时，外边框就可能会被裁剪掉，此时启用内嵌式边框可解决该问题，注意 IE14- 不支持 outline-offset 样式，只能用阴影来实现该功能
+	
+	ontabAlways : false,            // 如果在节点的 xj-focus="{}" 中将该参数设置为 true，则聚焦时总会被当成是 ontab 模式的聚焦，默认是 false，这个参数优先级最高
+	ontapAlways : false,            // 如果在节点的 xj-focus="{}" 中将该参数设置为 true，则聚焦时总会被当成是 ontap 模式的聚焦，默认是 false，这个参数优先级最高
+	otherAlways : false,            // 如果在节点的 xj-focus="{}" 中将该参数设置为 true，则聚焦时总会被当成是 other 模式的聚焦，默认是 false，这个参数优先级最高
+	
+	ontabCallback : pub_nothing,    // 这是当进入 ontab 状态下的回调函数，function(element){ }，参数 element 是导致函数触发的节点，你也可以借着这个节点自己进行进一步的判断，如果该函数最终返回的是 false，那么将会阻止本次进入 ontab 状态的操作
+	ontapCallback : pub_nothing,    // 这是当进入 ontap 状态下的回调函数，function(element){ }，参数 element 是导致函数触发的节点，你也可以借着这个节点自己进行进一步的判断，如果该函数最终返回的是 false，那么将会阻止本次进入 ontap 状态的操作
+	otherCallback : pub_nothing,    // 这是当进入 other 状态下的回调函数，function(element){ }，参数 element 是导致函数触发的节点，你也可以借着这个节点自己进行进一步的判断，如果该函数最终返回的是 false，那么将会阻止本次进入 other 状态的操作
+	
+	// focus 聚焦并不是只有节点被点击了或按了键盘的 Tab 键才会发生，实际上还有其他情况，有些是浏览器自动的操作，有些则是由 JS 导致的，插件将这些情况也都考虑到了
+	// 下面的这 5 个参数，是用于区分不同的场景之下，触发了 focus 聚焦事件后的响应模式，这些参数都有 3 个字符串值可供选用，它们分别是 'ontab' | 'ontap' | 'other'
+	// 如果设为 'ontab'，那么元素节点聚焦后，默认会被添加 '.xj-focus-ontab' 类名，如果使用了 xj.focus.css 文件，那么这个类名将导致被聚焦的元素显示出蓝色的外边框
+	// 如果设为 'ontap'，那么元素节点聚焦后，默认会被添加 '.xj-focus-ontap' 类名，如果使用了 xj.focus.css 文件，那么这个类名会导致被聚焦的元素不显示出任何外边框
+	// 如果设为 'other'，那么元素节点聚焦后，默认会被添加 '.xj-focus-other' 类名，实际上这相当于忽略这个 focus 事件，一般在 dispatchFocus 场景使用，不显示外边框
+	initializedFocus : 'ontab',     // 当聚焦事件是由页面 DOMContentLoaded 既 ready 后浏览器自动触发(在 DOMContentLoaded 后 IE10|11 中就会出现)该如何响应，默认是 'ontab'，此时最好能让用户能明确页面所在焦点，所以用 'ontab' 来强调外边框的存在
+	visibilityFocus : 'ontab',      // 当聚焦事件是由于切换浏览器的 tab 标签或浏览器最小最大化操作而触发的(会伴随着 visibilitychange 事件响应)，该如何响应，默认是 'ontab'，这种情况下用户可能会忘记之前页面的焦点位置，所以再次显示出外边框提示
+	automaticFocus : 'ontab',       // 当聚焦事件是由于聚焦到浏览器的 DevTool 面板或浏览器的 URL 地址栏，然后再回到页面中导致的，该如何响应，默认是 'ontab'，这样用 Tab 键从 DevTool 面板或 URL 地址栏切入页面时，首个被聚焦的元素将会显示外边框
+	dispatchFocus : 'other',        // 当聚焦事件是由节点执行 dispatchEvent() 方法触发的，该如何响应，默认是 'other'，因为这种使用事件对象来触发方式并不会真的造成 UI 聚焦，执行后也无法自动再执行失焦，所以如果遇到的是这种情况，那就相当于忽略
+	elementFocus : 'ontab',         // 当聚焦事件是由 Element.prototype.focus() 方法触发，该如何响应，默认是 'ontab'，因为手动执行了节点的 focus() 方法这种情况，往往是需要强调被聚焦元素的，所以使用 'ontab' 显示外边框，以此来加强对用户的提示
+	
+	inherit : true,                 // 是否自动继承属性，默认是 true，如果节点的上层标签设置 xj-focus="{ }" 属性，那么该属性会被继承，除非子元素自己也设置了属性
+	
+};
+</script>
+</textarea>
+
+<hr />
+</section>
+
+
+
+<section>
+<h2>项目备注</h2>
+
+<p>01. 使用 <code>dispatchEvent()</code> 方法触发的 <code>focus</code> 事件并不会真的在 UI 上实现聚焦，所以之后也不会触发 <code>blur</code> 事件，这就导致如果聚焦是由该方法触发的，那么 <code>xj-focus-other</code> 类名可能会长期存在，直到页面上某个节点真实触发了 <code>blur</code> 事件，才会被去掉。</p>
+
+<p>02. 有疑问或者发现 BUG，可到 GitHub 提 <a target="_blank" href="https://github.com/xjZone/xj.ripple/issues">Issue</a>，如果觉得插件写得还行，在 GitHub 中为本项目点个 <a target="_blank" href="https://github.com/xjZone/xj.ripple">★Star</a> 吧，感谢啦 ಠ‿ಠ ❤。</p>
+
+<hr />
+</section>
+
+
+
+<!-- <section>
+<h2>推荐阅读</h2>
+<p>XJ.Chen - <a target="_blank" href="https://juejin.cn/post/????">浅谈 :focus 伪类选择器和聚焦后 outline 边框的设置问题</a></p>
+<hr />
+</section> -->
+
+
+
+</div>
+</main>
+
+
+
+<div id="pub_foot">
+	<div id="pub_footPack">
+		<div>Copyright © 2015-<script>document.write(new Date().getFullYear())</script> XJ.Chen All Rights Reserved</div>
+		<div>More XJ Plugins : <a target="_blank" href="https://github.com/xjZone/">https://github.com/xjZone/</a></div>
+	</div>
+</div>
+
+<div id="pub_tool">
+	<div id="pub_toolPack">
+		<button id="pub_toolSwitchDir" type="button" title="Switch The Dir"><i class="fas fa-list-ul"></i></button>
+		<button id="pub_toolBackToTop" type="button" title="Back to Top"><i class="fas fa-angles-up"></i></button>
+	</div>
+</div>
 
 
 

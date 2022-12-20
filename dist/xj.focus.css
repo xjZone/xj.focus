@@ -1,22 +1,47 @@
-/** xj.focus(区分聚焦模式) | V0.3.2 | Apache Licence 2.0 | 2018-2021 © XJ.Chen | https://github.com/xjZone/xj.focus */
+/** xj.focus(区分聚焦模式) | V0.4.0 | Apache Licence 2.0 | 2018-2022 © XJ.Chen | https://github.com/xjZone/xj.focus/ */
 
-/* 在 tap 模式下，取消所有的聚焦 outline 外边框，在 tab 模式下，取消所有聚焦 outline 并且使用 */
-/* box-shadow 制造外边框，因为和 outline 一样不占位置但又能实现圆角，虽然在 Safari 中可能无效 */
-.xj-focus-shadow.xj-focus-ontap:focus{outline:0;}
-.xj-focus-shadow.xj-focus-ontab:focus{outline:0;box-shadow:0 0 0 2px rgba(51,153,255,0.75);}
-
+/* 在 tap 模式下，取消所有的聚焦 outline 外边框，在 tab 模式下，设置聚焦后显示 outline 外边框 */
+/* 使用阴影制造外边框，不占位置又能实现圆角，但 inset 模式可能会被子元素遮挡，Safari 可能无效 */
 /* Safari 的表单控件不理会 box-shadow，除非有设置 -webkit-appearance:none，但这样控件又会异常 */
-/* 不是所有环境都会重置表单控件的样式，所以外边框只好改用 outline，这样做的缺点是无法实现圆角 */
-.xj-focus-outline.xj-focus-ontap:focus{outline:0;}
-.xj-focus-outline.xj-focus-ontab:focus{outline:2px solid rgba(51,153,255,0.75);outline-offset:0;}
+/* 不是所有环境都会有重置表单控件的样式，所以默认情况下，Safari 在插件中会用 outline 做外边框 */
 
-/* 由于 audio 标签和 video 标签无法捕捉到鼠标和键盘事件，所以无法判断出聚焦是由哪种行为导致的 */
-/* 插件只好将这两个标签的所有聚焦行为都判断为是鼠标点击导致的，所以聚焦的时候不会显示出外边框 */
-/* 这里用 CSS4 的 :focus-visible 伪类选择器做补充，Firefox85+ 和 Chrome86+ 开始支持这个选择器 */
+.xj-focus-ontap.xj-focus-shadow:focus{outline:0 solid rgba(255, 255, 255, 0);}
+.xj-focus-ontab.xj-focus-shadow:focus{outline:0;box-shadow:0 0 0 2px rgba(51,153,255,0.750);}
+.xj-focus-ontab.xj-focus-shadow.xj-focus-inset:focus{outline:0;box-shadow:0 0 0 2px rgba(51,153,255,0.750) inset;}
+
+/* IE11- & Edge18- & Safari16.2- 并不支持 outline 圆角，IE11- & Edge14- 不支持 outline-offset */
+/* Safari 聚焦自带 outline-offset:-2px 需要清掉，Firefox88+ & Chrome94+ 开始支持 outline 圆角 */
+/* 目标节点的父节点设置了 overflow:hidden 则 outline 或 box-shadow 生成的外边框就可能会看不见 */
+/* 此时可启用内嵌模式 inset，但 IE14- 不支持 outline-offset，而内嵌 shadow 可能会被子元素遮挡 */
+
+.xj-focus-ontap.xj-focus-outline:focus{outline:0;}
+.xj-focus-ontab.xj-focus-outline:focus{outline:2px solid rgba(51,153,255,0.750);}
+.xj-focus-ontab.xj-focus-outline:not(.xj-focus-inset):focus{outline-offset:0;}
+.xj-focus-ontab.xj-focus-outline.xj-focus-inset:focus{outline-offset:-2px;}
+
+/* audio & video 的键鼠事件按照标准不会传递(不冒泡也不能捕获)，因此没法判断聚焦由哪种行为触发 */
+/* 较新的 Firefox 和 Chrome 都是符合标准的做法，但是 IE & EDGE 和 Safari 一直都没按照标准执行 */
+
+/* 不符合标准的浏览器，audio & video 可用 JS 判断是哪种行为导致聚焦，但符合标准的浏览器则不行 */
+/* 插件专门为 Firefox & Chrome 特别调整 ontapSelector 配置，既 audio & video 聚焦不显示外边框 */
+/* 然后这里用 :focus-visible 选择器补充，Firefox85 和 Chrome86 和 Safari15.4 开始支持该选择器 */
 /* 支持这个选择器的时候使用键盘聚焦还是能显示出外边框的，但是使用鼠标点击的时候就不显示外边框 */
-audio.xj-focus-shadow:focus:focus-visible,
-video.xj-focus-shadow:focus:focus-visible{outline:0;box-shadow:0 0 0 2px rgba(51,153,255,0.75);}
-audio.xj-focus-outline:focus:focus-visible,
-video.xj-focus-outline:focus:focus-visible{outline:2px solid rgba(51,153,255,0.75);outline-offset:0;}
+
+/* 因此最后结果是，IE & Edge 和 Safari 使用 JS 判断，而 Firefox85+ 和 Chrome86+ 使用 CSS 实现 */
+/* Safari 的 JS 和 CSS 功能重叠但不影响结果，只剩 Firefox84- & Chrome85- 用键盘聚焦不显外边框 */
+
+audio.xj-focus-shadow:focus:focus-visible{outline:0;box-shadow:0 0 0 2px rgba(51,153,255,0.750);}
+audio.xj-focus-shadow.xj-focus-inset:focus:focus-visible{outline:0;box-shadow:0 0 0 2px rgba(51,153,255,0.750) inset;}
+
+audio.xj-focus-outline:focus:focus-visible{outline:2px solid rgba(51,153,255,0.750);}
+audio.xj-focus-outline:not(.xj-focus-inset):focus:focus-visible{outline-offset:0;}
+audio.xj-focus-outline.xj-focus-inset:focus:focus-visible{outline-offset:-2px;}
+
+video.xj-focus-shadow:focus:focus-visible{outline:0;box-shadow:0 0 0 2px rgba(51,153,255,0.750);}
+video.xj-focus-shadow.xj-focus-inset:focus:focus-visible{outline:0;box-shadow:0 0 0 2px rgba(51,153,255,0.750) inset;}
+
+video.xj-focus-outline:focus:focus-visible{outline:2px solid rgba(51,153,255,0.750);}
+video.xj-focus-outline:not(.xj-focus-inset):focus:focus-visible{outline-offset:0;}
+video.xj-focus-outline.xj-focus-inset:focus:focus-visible{outline-offset:-2px;}
 
 
